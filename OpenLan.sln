@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenLan.Web", "OpenLan.Web\OpenLan.Web.csproj", "{9B16A24B-4E5E-4DC8-A3E5-C8AA77C82348}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenLan.Tests", "OpenLan.Tests\OpenLan.Tests.csproj", "{6CEC5B1C-E69F-4440-8E7D-FCEEA3E80E32}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B16A24B-4E5E-4DC8-A3E5-C8AA77C82348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B16A24B-4E5E-4DC8-A3E5-C8AA77C82348}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B16A24B-4E5E-4DC8-A3E5-C8AA77C82348}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B16A24B-4E5E-4DC8-A3E5-C8AA77C82348}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CEC5B1C-E69F-4440-8E7D-FCEEA3E80E32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CEC5B1C-E69F-4440-8E7D-FCEEA3E80E32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CEC5B1C-E69F-4440-8E7D-FCEEA3E80E32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CEC5B1C-E69F-4440-8E7D-FCEEA3E80E32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
