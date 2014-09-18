@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace OpenLan.Web.Models
 {
@@ -108,5 +111,76 @@ namespace OpenLan.Web.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+    }
+
+    public class EditUserViewModel
+    {
+        public EditUserViewModel() { }
+
+        // Allow Initialization with an instance of ApplicationUser:
+        public EditUserViewModel(ApplicationUser user)
+        {
+            this.UserName = user.UserName;
+        }
+
+        [Required]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
+    }
+
+
+    public class SelectUserRolesViewModel
+    {
+        public SelectUserRolesViewModel()
+        {
+            this.Roles = new List<SelectRoleEditorViewModel>();
+        }
+
+
+        // Enable initialization with an instance of ApplicationUser:
+        public SelectUserRolesViewModel(ApplicationUser user)
+            : this()
+        {
+            this.UserName = user.UserName;
+
+            var Db = new OpenLanContext();
+
+            // Add all available roles to the list of EditorViewModels:
+            var allRoles = Db.Roles;
+            foreach (var role in allRoles)
+            {
+                // An EditorViewModel will be used by Editor Template:
+                var rvm = new SelectRoleEditorViewModel(role);
+                this.Roles.Add(rvm);
+            }
+
+            // Set the Selected property to true for those roles for 
+            // which the current user is a member:
+            foreach (var checkUserRole in user.Roles.Select(userRole => this.Roles.Find(r => r.RoleId == userRole.RoleId)))
+            {
+                checkUserRole.Selected = true;
+            }
+        }
+
+        public string UserName { get; set; }
+
+        public List<SelectRoleEditorViewModel> Roles { get; set; }
+    }
+
+    // Used to display a single role with a checkbox, within a list structure:
+    public class SelectRoleEditorViewModel
+    {
+        public SelectRoleEditorViewModel() { }
+        public SelectRoleEditorViewModel(IdentityRole role)
+        {
+            this.RoleName = role.Name;
+        }
+
+        public bool Selected { get; set; }
+
+        public string RoleId { get; set; }
+
+        [Required]
+        public string RoleName { get; set; }
     }
 }

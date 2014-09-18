@@ -1,0 +1,16 @@
+﻿@model OpenLan.Web.Models.Team
+
+@{
+    ViewBag.Title = "Thanks!";
+}
+
+<h2>Welcome, @Html.DisplayFor(model => model.Name)!</h2>
+
+<p class="bg-success">
+    Your team was created successfully
+</p>
+
+Your team's access code is: <code><b>@Html.DisplayFor(model => model.Token)</b></code>. Share this code with your teammates. They'll need it to join your team!
+
+<hr/>
+<a class="btn btn-success" href="/Team">Start your adventure! &raquo;</a>
