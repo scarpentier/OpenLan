@@ -477,7 +477,6 @@ namespace OpenLan.Web.Controllers
             return RedirectToAction("Index");
         }
 
-
         [Authorize(Roles = "Admin")]
         public ActionResult UserRoles(string id)
         {

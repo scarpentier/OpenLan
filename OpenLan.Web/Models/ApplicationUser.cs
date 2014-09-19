@@ -17,6 +17,8 @@ namespace OpenLan.Web.Models
             return userIdentity;
         }
 
+        public ICollection<ApplicationUserRole> UserRoles { get;set; }
+
         public virtual Team Team { get; set; }
     }
 

@@ -128,7 +128,6 @@ namespace OpenLan.Web.Models
         public string UserName { get; set; }
     }
 
-
     public class SelectUserRolesViewModel
     {
         public SelectUserRolesViewModel()
@@ -156,8 +155,10 @@ namespace OpenLan.Web.Models
 
             // Set the Selected property to true for those roles for 
             // which the current user is a member:
-            foreach (var checkUserRole in user.Roles.Select(userRole => this.Roles.Find(r => r.RoleId == userRole.RoleId)))
+            foreach (var userRole in user.UserRoles)
             {
+                var checkUserRole =
+                    this.Roles.Find(r => r.RoleName == userRole.Role.Name);
                 checkUserRole.Selected = true;
             }
         }
@@ -165,22 +166,5 @@ namespace OpenLan.Web.Models
         public string UserName { get; set; }
 
         public List<SelectRoleEditorViewModel> Roles { get; set; }
-    }
-
-    // Used to display a single role with a checkbox, within a list structure:
-    public class SelectRoleEditorViewModel
-    {
-        public SelectRoleEditorViewModel() { }
-        public SelectRoleEditorViewModel(IdentityRole role)
-        {
-            this.RoleName = role.Name;
-        }
-
-        public bool Selected { get; set; }
-
-        public string RoleId { get; set; }
-
-        [Required]
-        public string RoleName { get; set; }
     }
 }
