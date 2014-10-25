@@ -5,7 +5,7 @@ using System.Web;
 
 namespace OpenLan.Web.Models
 {
-    public class TournamentTeam
+    public class ShoppingCartItem : Product
     {
 
     }

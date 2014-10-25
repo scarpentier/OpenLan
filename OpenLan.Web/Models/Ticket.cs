@@ -5,7 +5,7 @@ using System.Web;
 
 namespace OpenLan.Web.Models
 {
-    public class Ticket
+    public class Ticket : Product
     {
         public int Id { get; set; }
 
