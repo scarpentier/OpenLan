@@ -1,18 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNet.Mvc;
 
 namespace OpenLan.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public IActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            return View();
+        }
+
+        public IActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
 
             return View();
+        }
+
+        public IActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        public IActionResult Error()
+        {
+            return View("~/Views/Shared/Error.cshtml");
         }
     }
 }

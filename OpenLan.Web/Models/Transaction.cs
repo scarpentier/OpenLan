@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace OpenLan.Web.Models
 {
     public class Transaction
     {
-        public int Id { get; set; }
+        public int TransactionId { get; set; }
 
-        public String  Code { get; set; }
+        /// <summary>
+        /// User that initiated the transaction
+        /// </summary>
+        [Required]
+        public ApplicationUser User { get; set; }
 
-        public DateTime TimeStarted { get; set; }
+        [Required]
+        public DateTime Date { get; set; }
 
-        public DateTime TimeEnded { get; set; }
-
-        public String Status { get; set; }
-
-        public virtual ApplicationUser ContactUser { get; set; }
+        [Required]
+        public List<Ticket> Tickets { get; set; }
     }
 }

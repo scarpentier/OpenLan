@@ -1,22 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace OpenLan.Web.Models
 {
-    public class Ticket : Product
+    public class Ticket
     {
-        public int Id { get; set; }
+        public int TicketId { get; set; }
 
-        public ApplicationUser Owner { get; set; }
+        /// <summary>
+        /// Origin transaction for the ticket
+        /// </summary>
+        [Required]
+        public Transaction Transaction { get; set; }
 
-        public Transaction transaction { get; set; }
+        /// <summary>
+        /// User for which the ticket is applied
+        /// </summary>
+        public ApplicationUser User { get; set; }
 
-        public string Tagline { get; set; }
-
-        public virtual ICollection<ApplicationUser> Members { get; set; }
-
-        public virtual ApplicationUser ContactUser { get; set; }
+        /// <summary>
+        /// Seat for which the ticket is applied
+        /// </summary>
+        public Seat Seat { get; set; }
     }
 }

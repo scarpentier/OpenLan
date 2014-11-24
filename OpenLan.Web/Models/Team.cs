@@ -1,29 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OpenLan.Web.Models
 {
     public class Team
     {
-        public int Id { get; set; }
+        [ScaffoldColumn(false)]
+        public int TeamId { get; set; }
 
+        /// <summary>
+        /// Name of the team
+        /// </summary>
+        [Required]
         public string Name { get; set; }
 
+        /// <summary>
+        /// URL to the team's website
+        /// </summary>
+        [DataType(DataType.Url)]
         public string Url { get; set; }
 
-        public string Token { get; set; }
-
+        /// <summary>
+        /// Team's tagline
+        /// </summary>
         public string Tagline { get; set; }
 
-        public TournamentTeam TournamentTeam { get; set; }
+        /// <summary>
+        /// Generated token to join a team
+        /// </summary>
+        [Required]
+        public string Token { get; set; }
 
-        public virtual ICollection<ApplicationUser> Members { get; set; }
+        /// <summary>
+        /// User that owns the team
+        /// </summary>
+        [Required]
+        public ApplicationUser Owner { get; set; }
 
-        public virtual ApplicationUser ContactUser { get; set; }
+        /// <summary>
+        /// Team's members
+        /// </summary>
+        public List<ApplicationUser> Members { get; set; }
 
+        /// <summary>
+        /// Tournaments in which the team is registered
+        /// </summary>
+        public List<Tournament> Tournaments { get; set; }
     }
 }
