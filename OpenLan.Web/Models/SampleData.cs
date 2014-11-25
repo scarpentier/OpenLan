@@ -20,7 +20,16 @@ namespace OpenLan.Web.Models
         {
             using (var db = serviceProvider.GetService<OpenLanContext>())
             {
-                if (await db.Database.EnsureCreatedAsync())
+                var sqlServerDataStore = db.Configuration.DataStore as SqlServerDataStore;
+                if (sqlServerDataStore != null)
+                {
+                    if (await db.Database.EnsureCreatedAsync())
+                    {
+                        await InsertTestData(serviceProvider);
+                        await CreateAdminUser(serviceProvider);
+                    }
+                }
+                else
                 {
                     await InsertTestData(serviceProvider);
                     await CreateAdminUser(serviceProvider);

@@ -3,11 +3,11 @@
     "DefaultAdminPassword": "YouShouldChangeThisPassword1!",
     "Data": {
         "DefaultConnection": {
-            "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=aspnet5-OpenLan.Web-ed835bf7-39b0-4ff6-82e0-478bfc859755;Trusted_Connection=True;MultipleActiveResultSets=true"
+            "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=OpenLan;Trusted_Connection=True;MultipleActiveResultSets=true"
         }
     },
     "EntityFramework": {
-        "OpenLanDbContext": {
+        "OpenLanContext": {
             "ConnectionStringKey": "Data:DefaultConnection:ConnectionString"
         }
     }

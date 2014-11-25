@@ -75,8 +75,7 @@ namespace OpenLan.Web.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.UserName,
-                    BirthDate = model.BirthDate
+                    UserName = model.UserName
                 };
 
                 var result = await UserManager.CreateAsync(user, model.Password);

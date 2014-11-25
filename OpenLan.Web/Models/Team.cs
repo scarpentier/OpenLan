@@ -21,6 +21,9 @@ namespace OpenLan.Web.Models
         [DataType(DataType.Url)]
         public string Url { get; set; }
 
+        [DataType(DataType.Url)]
+        public string PictureUrl { get; set; }
+
         /// <summary>
         /// Team's tagline
         /// </summary>

@@ -37,15 +37,10 @@ namespace OpenLan.Web
                 .AddDbContext<OpenLanContext>();
 
             // Add Identity services to the services container.
-            services.AddIdentity<ApplicationUser, IdentityRole>(Configuration)
-                    .AddEntityFrameworkStores<OpenLanContext>()
-                    .AddDefaultTokenProviders();
+            services.AddDefaultIdentity<OpenLanContext, ApplicationUser, IdentityRole>(Configuration);
 
             // Add MVC services to the services container.
             services.AddMvc();
-
-            // Add all SignalR related services to IoC.
-            services.AddSignalR();
 
             // Uncomment the following line to add Web API servcies which makes it easier to port Web API 2 controllers.
             // You need to add Microsoft.AspNet.Mvc.WebApiCompatShim package to project.json
