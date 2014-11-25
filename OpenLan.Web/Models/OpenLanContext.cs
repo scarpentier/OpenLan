@@ -7,24 +7,23 @@ namespace OpenLan.Web.Models
 {
     public class OpenLanContext : IdentityDbContext<ApplicationUser>
     {
-        private static bool _created = false;
+        //private static bool _created = false;
 
         public OpenLanContext()
         {
-            // Create the database and schema if it doesn't exist
-            // This is a temporary workaround to create database until Entity Framework database migrations 
-            // are supported in ASP.NET 5
-            if (!_created)
-            {
-                Database.AsRelational().ApplyMigrations();
-                _created = true;
-            }
+            ////// Create the database and schema if it doesn't exist
+            ////// This is a temporary workaround to create database until Entity Framework database migrations 
+            ////// are supported in ASP.NET 5
+            ////if (!_created)
+            ////{
+            ////    Database.AsRelational(0)..ApplyMigrations();
+            ////    _created = true;
+            ////}
         }
 
         public DbSet<Team> Teams { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
-        public Floorplan Floorplan { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
@@ -43,10 +42,19 @@ namespace OpenLan.Web.Models
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
 
-            builder.Entity<Product>().Key(p => p.ProductId);
-            builder.Entity<Order>().Key(o => o.OrderId);
-            builder.Entity<CartItem>().Key(c => c.CartItemId);
-            builder.Entity<OrderDetail>().Key(o => o.OrderDetailId);
+            // Configure pluralization
+            builder.Entity<CartItem>().ForRelational().Table("CartItems");
+            builder.Entity<Order>().ForRelational().Table("Orders");
+            builder.Entity<OrderDetail>().ForRelational().Table("OrderDetails");
+            builder.Entity<Product>().ForRelational().Table("Products");
+            builder.Entity<Seat>().ForRelational().Table("Seats");
+            builder.Entity<Team>().ForRelational().Table("Teams");
+            builder.Entity<Ticket>().ForRelational().Table("Tickets");
+            builder.Entity<Tournament>().ForRelational().Table("Tournament");
+
+            // TODO: Remove this once convention-based relations work again
+            builder.Entity<Order>().OneToMany(o => o.OrderDetails);
+            builder.Entity<Product>().OneToMany(p => p.OrderDetails, od => od.Product);
         }
     }
 }

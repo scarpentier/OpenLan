@@ -5,7 +5,8 @@ namespace OpenLan.Web.Models
 {
     public class Tournament
     {
-        public int TournamentId { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         /// <summary>
         /// Name of the tournament

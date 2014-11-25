@@ -3,11 +3,8 @@ using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Routing;
-using Microsoft.AspNet.Security.Cookies;
-using Microsoft.Data.Entity;
 using Microsoft.Framework.ConfigurationModel;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
@@ -18,6 +15,8 @@ namespace OpenLan.Web
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; set; }
+
         public Startup(IHostingEnvironment env)
         {
             // Setup configuration sources.
@@ -26,9 +25,10 @@ namespace OpenLan.Web
                 .AddEnvironmentVariables();
         }
 
-        public IConfiguration Configuration { get; set; }
-
-        // This method gets called by the runtime.
+        /// <summary>
+        /// This method gets called by the runtime.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             // Add EF services to the services container.
@@ -37,21 +37,19 @@ namespace OpenLan.Web
                 .AddDbContext<OpenLanContext>();
 
             // Add Identity services to the services container.
-            services.AddDefaultIdentity<OpenLanContext, ApplicationUser, IdentityRole>(Configuration);
-
-            services.ConfigureGoogleAuthentication(options =>
-            {
-                options.ClientId = "977382855444.apps.googleusercontent.com";
-                options.ClientSecret = "NafT482F70Vjj_9q1PU4B0pN";
-            });
+            services.AddIdentity<ApplicationUser, IdentityRole>(Configuration)
+                    .AddEntityFrameworkStores<OpenLanContext>()
+                    .AddDefaultTokenProviders();
 
             // Add MVC services to the services container.
             services.AddMvc();
 
+            // Add all SignalR related services to IoC.
+            services.AddSignalR();
+
             // Uncomment the following line to add Web API servcies which makes it easier to port Web API 2 controllers.
             // You need to add Microsoft.AspNet.Mvc.WebApiCompatShim package to project.json
             // services.AddWebApiConventions();
-
         }
 
         // Configure is called after ConfigureServices is called.

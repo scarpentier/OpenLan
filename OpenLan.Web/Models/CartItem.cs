@@ -6,7 +6,7 @@ namespace OpenLan.Web.Models
     public class CartItem
     {
         [Key]
-        public int CartItemId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string CartId { get; set; }

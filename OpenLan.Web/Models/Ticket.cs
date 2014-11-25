@@ -8,10 +8,10 @@ namespace OpenLan.Web.Models
         public int TicketId { get; set; }
 
         /// <summary>
-        /// Origin transaction for the ticket
+        /// Origin order for the ticket
         /// </summary>
         [Required]
-        public Transaction Transaction { get; set; }
+        public Order Order { get; set; }
 
         /// <summary>
         /// User for which the ticket is applied

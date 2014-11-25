@@ -41,7 +41,7 @@ namespace OpenLan.Web.Models
         /// <summary>
         /// Team's members
         /// </summary>
-        public List<ApplicationUser> Members { get; set; }
+        public virtual List<ApplicationUser> Members { get; set; }
 
         /// <summary>
         /// Tournaments in which the team is registered

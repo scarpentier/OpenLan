@@ -26,13 +26,13 @@ namespace OpenLan.Web.Models
         {
             var cartItem = _db.CartItems.SingleOrDefault(
                 c => c.CartId == ShoppingCartId
-                && c.ProductId == product.ProductId);
+                && c.ProductId == product.Id);
 
             if (cartItem == null)
             {
                 cartItem = new CartItem
                 {
-                    ProductId = product.ProductId,
+                    ProductId = product.Id,
                     CartId = ShoppingCartId,
                     Count = 1,
                     DateCreated = DateTime.Now
@@ -51,7 +51,7 @@ namespace OpenLan.Web.Models
             // Get the cart
             var cartItem = _db.CartItems.Single(
                 cart => cart.CartId == ShoppingCartId
-                && cart.CartItemId == id);
+                && cart.Id == id);
 
             int itemCount = 0;
 
@@ -83,7 +83,7 @@ namespace OpenLan.Web.Models
             //TODO: Auto population of the related album data not available until EF feature is lighted up.
             foreach (var cartItem in cartItems)
             {
-                cartItem.Product = _db.Products.Single(a => a.ProductId == cartItem.ProductId);
+                cartItem.Product = _db.Products.Single(a => a.Id == cartItem.Id);
             }
 
             return cartItems;
@@ -120,7 +120,7 @@ namespace OpenLan.Web.Models
             decimal total = 0;
             foreach (var item in _db.CartItems.Where(c => c.CartId == ShoppingCartId))
             {
-                var album = _db.Products.Single(a => a.ProductId == item.ProductId);
+                var album = _db.Products.Single(a => a.Id == item.Id);
                 total += item.Count * album.Price;
             }
 
@@ -137,12 +137,12 @@ namespace OpenLan.Web.Models
             foreach (var item in cartItems)
             {
                 //var album = _db.Albums.Find(item.AlbumId);
-                var album = _db.Products.Single(a => a.ProductId == item.ProductId);
+                var album = _db.Products.Single(a => a.Id == item.ProductId);
 
                 var orderDetail = new OrderDetail
                 {
                     ProductId = item.ProductId,
-                    OrderId = order.OrderId,
+                    OrderId = order.Id,
                     UnitPrice = album.Price,
                     Quantity = item.Count,
                 };
@@ -160,7 +160,7 @@ namespace OpenLan.Web.Models
             EmptyCart();
 
             // Return the OrderId as the confirmation number
-            return order.OrderId;
+            return order.Id;
         }
 
         // We're using HttpContextBase to allow access to cookies.

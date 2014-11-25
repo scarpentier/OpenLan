@@ -5,7 +5,8 @@ namespace OpenLan.Web.Models
 {
     public class Seat
     {
-        public int SeatId { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         /// <summary>
         /// Seat name
@@ -19,6 +20,9 @@ namespace OpenLan.Web.Models
 
         public SeatStatus Status { get; set; }
 
+        /// <summary>
+        /// Associated ticked for that seat
+        /// </summary>
         public Ticket Ticket { get; set; }
     }
 
