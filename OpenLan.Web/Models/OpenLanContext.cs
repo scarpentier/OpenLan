@@ -7,18 +7,18 @@ namespace OpenLan.Web.Models
 {
     public class OpenLanContext : IdentityDbContext<ApplicationUser>
     {
-        private static bool _created = false;
+        ////private static bool _created = false;
 
         public OpenLanContext()
         {
-            // Create the database and schema if it doesn't exist
-            // This is a temporary workaround to create database until Entity Framework database migrations 
-            // are supported in ASP.NET 5
-            if (!_created)
-            {
-                Database.AsRelational().ApplyMigrations();
-                _created = true;
-            }
+            ////// Create the database and schema if it doesn't exist
+            ////// This is a temporary workaround to create database until Entity Framework database migrations 
+            ////// are supported in ASP.NET 5
+            ////if (!_created)
+            ////{
+            ////    Database.AsRelational().ApplyMigrations();
+            ////    _created = true;
+            ////}
         }
 
         public DbSet<Team> Teams { get; set; }
@@ -50,11 +50,19 @@ namespace OpenLan.Web.Models
             builder.Entity<Seat>().ForRelational().Table("Seats");
             builder.Entity<Team>().ForRelational().Table("Teams");
             builder.Entity<Ticket>().ForRelational().Table("Tickets");
-            builder.Entity<Tournament>().ForRelational().Table("Tournament");
+            builder.Entity<Tournament>().ForRelational().Table("Tournaments");
+            builder.Entity<TeamTournament>().ForRelational().Table("TeamTournaments");
 
             // TODO: Remove this once convention-based relations work again
-            builder.Entity<Order>().OneToMany(o => o.OrderDetails);
+            builder.Entity<Order>().OneToMany(o => o.OrderDetails, od => od.Order);
             builder.Entity<Product>().OneToMany(p => p.OrderDetails, od => od.Product);
+            builder.Entity<Team>().OneToMany(t => t.Members, m => m.Team);
+            builder.Entity<Ticket>().OneToOne(t => t.Seat, s => s.Ticket);
+            builder.Entity<Order>().OneToMany(o => o.Tickets, t => t.Order);
+            builder.Entity<Team>().OneToMany(t => t.Tournaments, t => t.Team);
+            builder.Entity<Tournament>().OneToMany(t => t.Teams, t => t.Tournament);
+            ////builder.Entity<ApplicationUser>().OneToMany(a => a.Tickets, t => t.User);
+            ////builder.Entity<ApplicationUser>().OneToMany(a => a.Orders, o => o.User);
         }
     }
 }

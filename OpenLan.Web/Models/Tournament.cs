@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace OpenLan.Web.Models
@@ -22,12 +23,15 @@ namespace OpenLan.Web.Models
         /// <summary>
         /// Picture to accompany the tournament
         /// </summary>
-        public string Picture { get; set; }
+        [DataType(DataType.Url)]
+        public string PictureUrl { get; set; }
 
         /// <summary>
         /// Url to the actual external tournament management system (BinaryBeast)
         /// </summary>
         [DataType(DataType.Url)]
         public string Url { get; set; }
+
+        public virtual List<TeamTournament> Teams { get; set; }
     }
 }

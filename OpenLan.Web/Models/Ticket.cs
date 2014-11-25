@@ -5,22 +5,28 @@ namespace OpenLan.Web.Models
 {
     public class Ticket
     {
-        public int TicketId { get; set; }
+        [Key]
+        public int Id { get; set; }
+
+        public int OrderId { get; set; }
 
         /// <summary>
         /// Origin order for the ticket
         /// </summary>
-        [Required]
-        public Order Order { get; set; }
+        public virtual Order Order { get; set; }
+
+        public string UserId { get; set; }
 
         /// <summary>
         /// User for which the ticket is applied
         /// </summary>
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
+
+        public int SeatId { get; set; }
 
         /// <summary>
         /// Seat for which the ticket is applied
         /// </summary>
-        public Seat Seat { get; set; }
+        public virtual Seat Seat { get; set; }
     }
 }

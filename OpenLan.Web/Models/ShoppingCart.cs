@@ -80,7 +80,7 @@ namespace OpenLan.Web.Models
         public List<CartItem> GetCartItems()
         {
             var cartItems = _db.CartItems.Where(cart => cart.CartId == ShoppingCartId).ToList();
-            //TODO: Auto population of the related album data not available until EF feature is lighted up.
+            //TODO: Auto population of the related product data not available until EF feature is lighted up.
             foreach (var cartItem in cartItems)
             {
                 cartItem.Product = _db.Products.Single(a => a.Id == cartItem.Id);
@@ -112,16 +112,16 @@ namespace OpenLan.Web.Models
 
         public decimal GetTotal()
         {
-            // Multiply album price by count of that album to get 
-            // the current price for each of those albums in the cart
-            // sum all album price totals to get the cart total
+            // Multiply product price by count of that product to get 
+            // the current price for each of those products in the cart
+            // sum all product price totals to get the cart total
 
             // TODO Collapse to a single query once EF supports querying related data
             decimal total = 0;
             foreach (var item in _db.CartItems.Where(c => c.CartId == ShoppingCartId))
             {
-                var album = _db.Products.Single(a => a.Id == item.Id);
-                total += item.Count * album.Price;
+                var product = _db.Products.Single(a => a.Id == item.Id);
+                total += item.Count * product.Price;
             }
 
             return total;
@@ -136,19 +136,18 @@ namespace OpenLan.Web.Models
             // Iterate over the items in the cart, adding the order details for each
             foreach (var item in cartItems)
             {
-                //var album = _db.Albums.Find(item.AlbumId);
-                var album = _db.Products.Single(a => a.Id == item.ProductId);
+                var product = _db.Products.Single(a => a.Id == item.ProductId);
 
                 var orderDetail = new OrderDetail
                 {
                     ProductId = item.ProductId,
                     OrderId = order.Id,
-                    UnitPrice = album.Price,
+                    UnitPrice = product.Price,
                     Quantity = item.Count,
                 };
 
                 // Set the order total of the shopping cart
-                orderTotal += (item.Count * album.Price);
+                orderTotal += (item.Count * product.Price);
 
                 _db.OrderDetails.Add(orderDetail);
             }

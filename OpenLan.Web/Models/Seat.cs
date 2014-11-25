@@ -23,7 +23,7 @@ namespace OpenLan.Web.Models
         /// <summary>
         /// Associated ticked for that seat
         /// </summary>
-        public Ticket Ticket { get; set; }
+        public virtual Ticket Ticket { get; set; }
     }
 
     public enum SeatStatus

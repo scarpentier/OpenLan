@@ -8,7 +8,7 @@ namespace openlan.web.Migrations
     public partial class Initial : Migration
     {
         public override void Up(MigrationBuilder migrationBuilder)
-        {           
+        {
             migrationBuilder.CreateTable("CartItems",
                 c => new
                     {
@@ -25,7 +25,8 @@ namespace openlan.web.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         OrderDate = c.DateTime(nullable: false),
-                        Total = c.Decimal(nullable: false)
+                        Total = c.Decimal(nullable: false),
+                        UserId = c.String()
                     })
                 .PrimaryKey("PK_Orders", t => t.Id);
             
@@ -66,40 +67,72 @@ namespace openlan.web.Migrations
             migrationBuilder.CreateTable("Teams",
                 c => new
                     {
-                        TeamId = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         PictureUrl = c.String(),
                         Tagline = c.String(),
                         Token = c.String(),
                         Url = c.String()
                     })
-                .PrimaryKey("PK_Teams", t => t.TeamId);
+                .PrimaryKey("PK_Teams", t => t.Id);
+            
+            migrationBuilder.CreateTable("TeamTournaments",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        TeamId = c.Int(nullable: false),
+                        TournamentId = c.Int(nullable: false)
+                    })
+                .PrimaryKey("PK_TeamTournaments", t => t.Id);
             
             migrationBuilder.CreateTable("Tickets",
                 c => new
                     {
-                        TicketId = c.Int(nullable: false, identity: true)
+                        Id = c.Int(nullable: false, identity: true),
+                        SeatId = c.Int(nullable: false),
+                        UserId = c.String(),
+                        OrderId = c.Int(nullable: false)
                     })
-                .PrimaryKey("PK_Tickets", t => t.TicketId);
+                .PrimaryKey("PK_Tickets", t => t.Id);
             
-            migrationBuilder.CreateTable("Tournament",
+            migrationBuilder.CreateTable("Tournaments",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Description = c.String(),
                         Name = c.String(),
-                        Picture = c.String(),
+                        PictureUrl = c.String(),
                         Url = c.String()
                     })
-                .PrimaryKey("PK_Tournament", t => t.Id);
-                       
+                .PrimaryKey("PK_Tournaments", t => t.Id);
+            
+            migrationBuilder.AddColumn("AspNetUsers", "Url", c => c.String());
+            
+            migrationBuilder.AddColumn("AspNetUsers", "TeamId", c => c.Int(nullable: false));
+            
             migrationBuilder.AddForeignKey("OrderDetails", "FK_OrderDetails_Orders_OrderId", new[] { "OrderId" }, "Orders", new[] { "Id" }, cascadeDelete: false);
             
             migrationBuilder.AddForeignKey("OrderDetails", "FK_OrderDetails_Products_ProductId", new[] { "ProductId" }, "Products", new[] { "Id" }, cascadeDelete: false);
+            
+            migrationBuilder.AddForeignKey("Seats", "FK_Seats_Tickets_Id", new[] { "Id" }, "Tickets", new[] { "Id" }, cascadeDelete: false);
+            
+            migrationBuilder.AddForeignKey("TeamTournaments", "FK_TeamTournaments_Teams_TeamId", new[] { "TeamId" }, "Teams", new[] { "Id" }, cascadeDelete: false);
+            
+            migrationBuilder.AddForeignKey("TeamTournaments", "FK_TeamTournaments_Tournaments_TournamentId", new[] { "TournamentId" }, "Tournaments", new[] { "Id" }, cascadeDelete: false);
+            
+            migrationBuilder.AddForeignKey("Tickets", "FK_Tickets_Orders_OrderId", new[] { "OrderId" }, "Orders", new[] { "Id" }, cascadeDelete: false);
+            
+            migrationBuilder.AddForeignKey("AspNetUsers", "FK_AspNetUsers_Teams_TeamId", new[] { "TeamId" }, "Teams", new[] { "Id" }, cascadeDelete: false);
         }
         
         public override void Down(MigrationBuilder migrationBuilder)
-        {          
+        {
+            migrationBuilder.DropForeignKey("AspNetUsers", "FK_AspNetUsers_Teams_TeamId");
+            
+            migrationBuilder.DropColumn("AspNetUsers", "Url");
+            
+            migrationBuilder.DropColumn("AspNetUsers", "TeamId");
+            
             migrationBuilder.DropTable("CartItems");
             
             migrationBuilder.DropTable("Orders");
@@ -112,9 +145,11 @@ namespace openlan.web.Migrations
             
             migrationBuilder.DropTable("Teams");
             
+            migrationBuilder.DropTable("TeamTournaments");
+            
             migrationBuilder.DropTable("Tickets");
             
-            migrationBuilder.DropTable("Tournament");
+            migrationBuilder.DropTable("Tournaments");
         }
     }
 }

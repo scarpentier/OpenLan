@@ -7,9 +7,25 @@ using System;
 namespace openlan.web.Migrations
 {
     [ContextType(typeof(OpenLanContext))]
-    public class OpenLanContextModelSnapshot : ModelSnapshot
+    public partial class Initial : IMigrationMetadata
     {
-        public override IModel Model
+        string IMigrationMetadata.MigrationId
+        {
+            get
+            {
+                return "201411251921453_Initial";
+            }
+        }
+        
+        string IMigrationMetadata.ProductVersion
+        {
+            get
+            {
+                return "7.0.0-beta1-11518";
+            }
+        }
+        
+        IModel IMigrationMetadata.TargetModel
         {
             get
             {

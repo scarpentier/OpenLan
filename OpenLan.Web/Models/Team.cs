@@ -6,8 +6,8 @@ namespace OpenLan.Web.Models
 {
     public class Team
     {
-        [ScaffoldColumn(false)]
-        public int TeamId { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         /// <summary>
         /// Name of the team
@@ -32,13 +32,11 @@ namespace OpenLan.Web.Models
         /// <summary>
         /// Generated token to join a team
         /// </summary>
-        [Required]
         public string Token { get; set; }
 
         /// <summary>
         /// User that owns the team
         /// </summary>
-        [Required]
         public ApplicationUser Owner { get; set; }
 
         /// <summary>
@@ -49,6 +47,6 @@ namespace OpenLan.Web.Models
         /// <summary>
         /// Tournaments in which the team is registered
         /// </summary>
-        public List<Tournament> Tournaments { get; set; }
+        public virtual List<TeamTournament> Tournaments { get; set; }
     }
 }
