@@ -63,6 +63,7 @@ namespace OpenLan.Web.Models
             builder.Entity<Tournament>().OneToMany(t => t.Teams, t => t.Tournament);
             ////builder.Entity<ApplicationUser>().OneToMany(a => a.Tickets, t => t.User);
             ////builder.Entity<ApplicationUser>().OneToMany(a => a.Orders, o => o.User);
+            builder.Entity<CartItem>().ManyToOne(ci => ci.Product);
         }
     }
 }

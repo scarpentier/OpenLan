@@ -13,8 +13,8 @@ namespace OpenLan.Web.Models
 {
     public class SampleData
     {
-        const string defaultAdminUserName = "admin";
-        const string defaultAdminPassword = "admin123";
+        const string defaultAdminUserNameConfigKey = "DefaultAdminUserName";
+        const string defaultAdminPasswordConfigKey = "DefaultAdminPassword";
 
         public static async Task InitializeOpenLanDatabaseAsync(IServiceProvider serviceProvider)
         {
@@ -55,11 +55,11 @@ namespace OpenLan.Web.Models
 
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
 
-            var user = await userManager.FindByNameAsync(configuration.Get<string>(defaultAdminUserName));
+            var user = await userManager.FindByNameAsync(configuration.Get<string>(defaultAdminUserNameConfigKey));
             if (user == null)
             {
-                user = new ApplicationUser { UserName = configuration.Get<string>(defaultAdminUserName) };
-                await userManager.CreateAsync(user, configuration.Get<string>(defaultAdminPassword));
+                user = new ApplicationUser { UserName = configuration.Get<string>(defaultAdminUserNameConfigKey) };
+                await userManager.CreateAsync(user, configuration.Get<string>(defaultAdminPasswordConfigKey));
                 await userManager.AddClaimAsync(user, new Claim("ManageUsers", "Allowed"));
             }
         }

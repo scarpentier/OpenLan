@@ -16,9 +16,14 @@ namespace OpenLan.Web.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Summary of what the tournament is about
+        /// Summary of what the tournament is about, rules
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Short tagline
+        /// </summary>
+        public string Tagline { get; set; }
 
         /// <summary>
         /// Picture to accompany the tournament
