@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace OpenLan.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize("ManageTournaments", "Allowed")]
+    [Authorize("ManageTournaments", "Allowed")]
     public class TournamentController : Controller
     {
         private readonly OpenLanContext db;

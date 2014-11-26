@@ -34,10 +34,12 @@ namespace OpenLan.Web.Models
         /// </summary>
         public string Token { get; set; }
 
+        public int OwnerUserId { get; set; } // TODO: Change for nullable type
+
         /// <summary>
         /// User that owns the team
         /// </summary>
-        public ApplicationUser Owner { get; set; }
+        public virtual ApplicationUser OwnerUser { get; set; }
 
         /// <summary>
         /// Team's members

@@ -60,7 +60,7 @@ namespace OpenLan.Web.Models
             {
                 user = new ApplicationUser { UserName = configuration.Get<string>(defaultAdminUserNameConfigKey) };
                 await userManager.CreateAsync(user, configuration.Get<string>(defaultAdminPasswordConfigKey));
-                await userManager.AddClaimAsync(user, new Claim("ManageUsers", "Allowed"));
+                await userManager.AddClaimAsync(user, new Claim("ManageTournaments", "Allowed"));
             }
         }
     }

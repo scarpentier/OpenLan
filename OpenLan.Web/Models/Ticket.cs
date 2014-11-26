@@ -22,7 +22,7 @@ namespace OpenLan.Web.Models
         /// </summary>
         public virtual ApplicationUser User { get; set; }
 
-        public int SeatId { get; set; }
+        public int SeatId { get; set; } // TODO: Change for nullable type
 
         /// <summary>
         /// Seat for which the ticket is applied

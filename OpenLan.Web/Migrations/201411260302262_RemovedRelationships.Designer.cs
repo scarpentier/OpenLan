@@ -7,9 +7,25 @@ using System;
 namespace OpenLan.Web.Migrations
 {
     [ContextType(typeof(OpenLanContext))]
-    public class OpenLanContextModelSnapshot : ModelSnapshot
+    public partial class RemovedRelationships : IMigrationMetadata
     {
-        public override IModel Model
+        string IMigrationMetadata.MigrationId
+        {
+            get
+            {
+                return "201411260302262_RemovedRelationships";
+            }
+        }
+        
+        string IMigrationMetadata.ProductVersion
+        {
+            get
+            {
+                return "7.0.0-beta1-11518";
+            }
+        }
+        
+        IModel IMigrationMetadata.TargetModel
         {
             get
             {

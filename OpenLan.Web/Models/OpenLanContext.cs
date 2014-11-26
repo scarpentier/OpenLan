@@ -53,17 +53,22 @@ namespace OpenLan.Web.Models
             builder.Entity<Tournament>().ForRelational().Table("Tournaments");
             builder.Entity<TeamTournament>().ForRelational().Table("TeamTournaments");
 
-            // TODO: Remove this once convention-based relations work again
-            builder.Entity<Order>().OneToMany(o => o.OrderDetails, od => od.Order);
-            builder.Entity<Product>().OneToMany(p => p.OrderDetails, od => od.Product);
-            builder.Entity<Team>().OneToMany(t => t.Members, m => m.Team);
-            builder.Entity<Ticket>().OneToOne(t => t.Seat, s => s.Ticket);
-            builder.Entity<Order>().OneToMany(o => o.Tickets, t => t.Order);
-            builder.Entity<Team>().OneToMany(t => t.Tournaments, t => t.Team);
-            builder.Entity<Tournament>().OneToMany(t => t.Teams, t => t.Tournament);
+            ////// TODO: Remove this once convention-based relations work again
+            ////builder.Entity<Order>().OneToMany(o => o.OrderDetails, od => od.Order);
+            ////builder.Entity<Product>().OneToMany(p => p.OrderDetails, od => od.Product);
+            ////builder.Entity<Team>().OneToMany(t => t.Members, m => m.Team);
+            ////builder.Entity<Ticket>().OneToOne(t => t.Seat, s => s.Ticket);
+            ////builder.Entity<Order>().OneToMany(o => o.Tickets, t => t.Order);
+            ////builder.Entity<Team>().OneToMany(t => t.Tournaments, t => t.Team);
+            ////builder.Entity<Tournament>().OneToMany(t => t.Teams, t => t.Tournament);
             ////builder.Entity<ApplicationUser>().OneToMany(a => a.Tickets, t => t.User);
             ////builder.Entity<ApplicationUser>().OneToMany(a => a.Orders, o => o.User);
-            builder.Entity<CartItem>().ManyToOne(ci => ci.Product);
+            ////builder.Entity<CartItem>().ManyToOne(ci => ci.Product);
+
+            ////// TODO: Remove this once the EF supports nullable types
+            builder.Entity<ApplicationUser>().Property(x => x.TeamId).Required(false);
+            builder.Entity<Team>().Property(x => x.OwnerUserId).Required(false);
+            builder.Entity<Ticket>().Property(x => x.SeatId).Required(false);
         }
     }
 }
