@@ -1,0 +1,8 @@
+﻿﻿@model OpenLan.Web.Models.Tournament
+
+<img src="@Model.PictureUrl" style="width: 210px; float: left; padding-right: 15px" />
+<a href="@Model.Url"><span style="font-size: x-large; font-weight: bold">@Model.Name</span></a>
+@if (Model.Tagline != null)
+{
+    <br /><span class="text-muted" >@Model.Tagline</span>
+}

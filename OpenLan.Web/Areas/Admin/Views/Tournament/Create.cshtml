@@ -18,7 +18,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @style = "width: 300px" })
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Tagline, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Tagline)
+                @Html.TextBoxFor(model => model.Tagline, new { @class = "form-control", @style = "width: 500px" })
                 @Html.ValidationMessageFor(model => model.Tagline)
             </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PictureUrl, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PictureUrl)
+                @Html.TextBoxFor(model => model.PictureUrl, new { @class = "form-control", @style = "width: 500px;" })
                 @Html.ValidationMessageFor(model => model.PictureUrl)
             </div>
         </div>
@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Url, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Url)
+                @Html.TextBoxFor(model => model.Url, new { @class = "form-control", @style = "width: 500px;" })
                 @Html.ValidationMessageFor(model => model.Url)
             </div>
         </div>
@@ -50,7 +50,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @style = "height: 200px" })
+                <span class="text-muted"><span class="glyphicon glyphicon-info-sign"></span> Supports <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">Markdown</a>. Please use sparingly.</span>
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>

@@ -1,0 +1,26 @@
+﻿﻿@model OpenLan.Web.Models.Tournament
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+@if (Model != null)
+{
+    <h2>Delete Confirmation</h2>
+
+    <h3>You are about to delete the @Html.Raw(Model.Name) tournament</h3>
+
+    @using (Html.BeginForm())
+    {
+        <p>
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </p>
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    }
+}
+else
+{
+    @Html.Label(null, "Unable to locate the tournament")
+}

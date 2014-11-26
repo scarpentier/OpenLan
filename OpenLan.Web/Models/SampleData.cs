@@ -41,8 +41,28 @@ namespace OpenLan.Web.Models
         {
             using (var db = serviceProvider.GetService<OpenLanContext>())
             {
-                db.Tournaments.Add(new Tournament { Name = "Serious Sam" });
-                db.Tournaments.Add(new Tournament { Name = "Scavenger Hunt" });
+                db.Tournaments.Add(new Tournament
+                {
+                    Name = "Serious Sam",
+                    Tagline = "Nothing too serious about it",
+                    PictureUrl = "http://cdn.akamai.steamstatic.com/steam/apps/41014/header.jpg",
+                    Url = "http://binarybeast.com/",
+                    Description = "Coop, Cathedral, serious difficulty, all guns, infinite ammo, extra monsters, monsters have extra health. Winner is the one who has the most points at the end. Bonus points for making it a drinking game"
+                });
+                db.Tournaments.Add(new Tournament
+                {
+                    Name = "Scavenger Hunt",
+                    Tagline = "Fight for the second place!",
+                    PictureUrl = "http://i.imgur.com/uJEKXh2.png",
+                    Url = "https://serioushunt.azurewebsites.net"
+                });
+                db.Tournaments.Add(new Tournament
+                {
+                    Name = "Minecraft",
+                    Tagline = "Punching wood!",
+                    PictureUrl = "http://i.imgur.com/VB04jf2.jpg",
+                    Url = "https://minecraft.net/"
+                });
                 await db.SaveChangesAsync();
             }
         }
