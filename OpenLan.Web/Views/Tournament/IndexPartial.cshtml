@@ -1,0 +1,10 @@
+﻿@model IEnumerable<OpenLan.Web.Models.Tournament>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6">
+            @Html.DisplayFor(modelItem => item, "TournamentName")
+        </div>
+    }
+</div>

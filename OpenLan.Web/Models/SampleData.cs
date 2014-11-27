@@ -63,6 +63,23 @@ namespace OpenLan.Web.Models
                     PictureUrl = "http://i.imgur.com/VB04jf2.jpg",
                     Url = "https://minecraft.net/"
                 });
+
+                db.Products.Add(new Product
+                {
+                    Name = "Serious Lan BYOC",
+                    Price = 80
+                });
+                db.Products.Add(new Product
+                {
+                    Name = "SouthSec Early Bird",
+                    Price = 250
+                });
+                db.Products.Add(new Product
+                {
+                    Name = "CS Games Participant",
+                    Price = 100
+                });
+
                 await db.SaveChangesAsync();
             }
         }
@@ -81,6 +98,7 @@ namespace OpenLan.Web.Models
                 user = new ApplicationUser { UserName = configuration.Get<string>(defaultAdminUserNameConfigKey) };
                 await userManager.CreateAsync(user, configuration.Get<string>(defaultAdminPasswordConfigKey));
                 await userManager.AddClaimAsync(user, new Claim("ManageTournaments", "Allowed"));
+                await userManager.AddClaimAsync(user, new Claim("ManageProducts", "Allowed"));
             }
         }
     }

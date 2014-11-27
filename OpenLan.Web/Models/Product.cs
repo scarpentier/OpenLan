@@ -19,7 +19,7 @@ namespace OpenLan.Web.Models
         public string Description { get; set; }
 
         [Required]
-        [Range(0.01, 200)]
+        [Range(0.01, 10000)]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 

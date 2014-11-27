@@ -1,8 +1,13 @@
 ﻿﻿@model OpenLan.Web.Models.Tournament
 
 <img src="@Model.PictureUrl" style="width: 210px; float: left; padding-right: 15px" />
-<a href="@Model.Url"><span style="font-size: x-large; font-weight: bold">@Model.Name</span></a>
+<a href="@Model.Url"><span style="font-size: x-large; font-weight: bold; margin-left: -4px">@Model.Name</span></a>
 @if (Model.Tagline != null)
 {
-    <br /><span class="text-muted" >@Model.Tagline</span>
+    <br />@Model.Tagline
+}
+
+@if (Model.Teams != null && Model.Teams.Count > 0)
+{
+    <br /><span class="text-muted">@Model.Teams.Count teams registered</span>
 }

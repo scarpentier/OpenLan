@@ -1,4 +1,4 @@
-﻿@model OpenLan.Web.Models.Tournament
+﻿@model OpenLan.Web.Models.Product
 
 @{
     ViewBag.Title = "Create";
@@ -11,7 +11,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Tournament</h4>
+        <h4>Product</h4>
         <hr />
         @Html.ValidationSummary(true)
 
@@ -24,14 +24,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Tagline, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Tagline, new { @class = "form-control", @style = "width: 500px" })
-                @Html.ValidationMessageFor(model => model.Tagline)
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.PictureUrl, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.PictureUrl, new { @class = "form-control", @style = "width: 500px;" })
@@ -40,10 +32,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Url, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Url, new { @class = "form-control", @style = "width: 500px;" })
-                @Html.ValidationMessageFor(model => model.Url)
+                @Html.EditorFor(model => model.Price, new { @class = "form-control", })
+                @Html.ValidationMessageFor(model => model.Price)
             </div>
         </div>
 
