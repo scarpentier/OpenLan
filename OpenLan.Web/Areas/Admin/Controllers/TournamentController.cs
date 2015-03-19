@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace OpenLan.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize("ManageTournaments", "Allowed")]
+    [Authorize("ManageTournaments")]
     public class TournamentController : Controller
     {
         private readonly OpenLanContext db;
@@ -59,7 +59,7 @@ namespace OpenLan.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ChangeTracker.Entry(tournament).State = EntityState.Modified;
+                db.Entry(tournament).SetState(EntityState.Modified);
                 await db.SaveChangesAsync(Context.RequestAborted);
                 return RedirectToAction("Index");
             }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.SqlServer;
-using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.ConfigurationModel;
+using Microsoft.Framework.DependencyInjection;
 
 namespace OpenLan.Web.Models
 {
@@ -16,23 +16,29 @@ namespace OpenLan.Web.Models
         const string defaultAdminUserNameConfigKey = "DefaultAdminUserName";
         const string defaultAdminPasswordConfigKey = "DefaultAdminPassword";
 
-        public static async Task InitializeOpenLanDatabaseAsync(IServiceProvider serviceProvider)
+        public static async Task InitializeOpenLanDatabaseAsync(IServiceProvider serviceProvider, bool createUsers = true)
         {
             using (var db = serviceProvider.GetService<OpenLanContext>())
             {
-                var sqlServerDataStore = db.Configuration.DataStore as SqlServerDataStore;
-                if (sqlServerDataStore != null)
+                var sqlServerDatabase = db.Database as SqlServerDatabase;
+                if (sqlServerDatabase != null)
                 {
-                    if (await db.Database.EnsureCreatedAsync())
+                    if (await sqlServerDatabase.EnsureCreatedAsync())
                     {
                         await InsertTestData(serviceProvider);
-                        await CreateAdminUser(serviceProvider);
+                        if (createUsers)
+                        {
+                            await CreateAdminUser(serviceProvider);
+                        }
                     }
                 }
                 else
                 {
                     await InsertTestData(serviceProvider);
-                    await CreateAdminUser(serviceProvider);
+                    if (createUsers)
+                    {
+                        await CreateAdminUser(serviceProvider);
+                    }
                 }
             }
         }
@@ -84,21 +90,61 @@ namespace OpenLan.Web.Models
             }
         }
 
+        /// <summary>
+        /// Creates a store manager user who can manage the inventory.
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        /// <returns></returns>
         private static async Task CreateAdminUser(IServiceProvider serviceProvider)
         {
             var configuration = new Configuration()
-                .AddJsonFile("config.json")
-                .AddEnvironmentVariables();
+                        .AddJsonFile("config.json")
+                        .AddEnvironmentVariables();
+
+            //const string adminRole = "Administrator";
 
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
+            // TODO: Identity SQL does not support roles yet
+            //var roleManager = serviceProvider.GetService<ApplicationRoleManager>();
+            //if (!await roleManager.RoleExistsAsync(adminRole))
+            //{
+            //    await roleManager.CreateAsync(new IdentityRole(adminRole));
+            //}
 
-            var user = await userManager.FindByNameAsync(configuration.Get<string>(defaultAdminUserNameConfigKey));
+            var user = await userManager.FindByNameAsync(configuration.Get<string>("defaultAdminUserName"));
             if (user == null)
             {
-                user = new ApplicationUser { UserName = configuration.Get<string>(defaultAdminUserNameConfigKey) };
-                await userManager.CreateAsync(user, configuration.Get<string>(defaultAdminPasswordConfigKey));
-                await userManager.AddClaimAsync(user, new Claim("ManageTournaments", "Allowed"));
+                user = new ApplicationUser { UserName = configuration.Get<string>("defaultAdminUserName") };
+                await userManager.CreateAsync(user, configuration.Get<string>("defaultAdminPassword"));
+                //await userManager.AddToRoleAsync(user, adminRole);
                 await userManager.AddClaimAsync(user, new Claim("ManageProducts", "Allowed"));
+                await userManager.AddClaimAsync(user, new Claim("ManageTournaments", "Allowed"));
+            }
+        }
+
+        // TODO [EF] This may be replaced by a first class mechanism in EF
+        private static async Task AddOrUpdateAsync<TEntity>(
+            IServiceProvider serviceProvider,
+            Func<TEntity, object> propertyToMatch, IEnumerable<TEntity> entities)
+            where TEntity : class
+        {
+            // Query in a separate context so that we can attach existing entities as modified
+            List<TEntity> existingData;
+            using (var db = serviceProvider.GetService<OpenLanContext>())
+            {
+                existingData = db.Set<TEntity>().ToList();
+            }
+
+            using (var db = serviceProvider.GetService<OpenLanContext>())
+            {
+                foreach (var item in entities)
+                {
+                    db.Entry(item).SetState(existingData.Any(g => propertyToMatch(g).Equals(propertyToMatch(item)))
+                        ? EntityState.Modified
+                        : EntityState.Added);
+                }
+
+                await db.SaveChangesAsync();
             }
         }
     }

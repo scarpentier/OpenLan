@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace OpenLan.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize("ManageProducts", "Allowed")]
+    [Authorize("ManageProducts")]
     public class ProductController : Controller
     {
         private readonly OpenLanContext db;
@@ -59,7 +59,7 @@ namespace OpenLan.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ChangeTracker.Entry(product).State = EntityState.Modified;
+                db.Entry(product).SetState(EntityState.Modified);
                 await db.SaveChangesAsync(Context.RequestAborted);
                 return RedirectToAction("Index");
             }

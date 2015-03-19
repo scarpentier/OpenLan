@@ -26,15 +26,13 @@ namespace OpenLan.Web.Components
             return View();
         }
 
-        private Task<IOrderedEnumerable<string>> GetCartItems()
+        private async Task<IOrderedEnumerable<string>> GetCartItems()
         {
             var cart = ShoppingCart.GetCart(db, Context);
 
-            var cartItems = cart.GetCartItems()
-                .Select(c => c.Product.Name)
+            return (await cart.GetCartItems())
+                .Select(ci => ci.Product.Name)
                 .OrderBy(x => x);
-
-            return Task.FromResult(cartItems);
         }
     }
 }

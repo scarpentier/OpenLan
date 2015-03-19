@@ -7,20 +7,6 @@ namespace OpenLan.Web.Models
 {
     public class OpenLanContext : IdentityDbContext<ApplicationUser>
     {
-        ////private static bool _created = false;
-
-        public OpenLanContext()
-        {
-            ////// Create the database and schema if it doesn't exist
-            ////// This is a temporary workaround to create database until Entity Framework database migrations 
-            ////// are supported in ASP.NET 5
-            ////if (!_created)
-            ////{
-            ////    Database.AsRelational().ApplyMigrations();
-            ////    _created = true;
-            ////}
-        }
-
         public DbSet<Team> Teams { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -37,7 +23,6 @@ namespace OpenLan.Web.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
@@ -66,9 +51,11 @@ namespace OpenLan.Web.Models
             ////builder.Entity<CartItem>().ManyToOne(ci => ci.Product);
 
             ////// TODO: Remove this once the EF supports nullable types
-            builder.Entity<ApplicationUser>().Property(x => x.TeamId).Required(false);
-            builder.Entity<Team>().Property(x => x.OwnerUserId).Required(false);
-            builder.Entity<Ticket>().Property(x => x.SeatId).Required(false);
+            //builder.Entity<ApplicationUser>().Property(x => x.TeamId).Required(false);
+            //builder.Entity<Team>().Property(x => x.OwnerUserId).Required(false);
+            //builder.Entity<Ticket>().Property(x => x.SeatId).Required(false);
+
+            base.OnModelCreating(builder);
         }
     }
 }
