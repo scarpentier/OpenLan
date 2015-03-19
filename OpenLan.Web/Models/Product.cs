@@ -18,17 +18,17 @@ namespace OpenLan.Web.Models
 
         public string Description { get; set; }
 
+        [ScaffoldColumn(false)]
+        [BindNever]
+        [Required]
+        public DateTime Created { get; set; }
+
         [Required]
         [Range(0.01, 10000)]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
         public virtual List<OrderDetail> OrderDetails { get; set; }
-
-        [ScaffoldColumn(false)]
-        [BindNever]
-        [Required]
-        public DateTime Created { get; set; }
 
         /// <summary>
         /// TODO: Temporary hack to populate the orderdetails until EF does this automatically. 

@@ -10,14 +10,12 @@ namespace OpenLan.Web.Models
         [Key]
         public int Id { get; set; }
 
-        public string UserId { get; set; }
+        public DateTime OrderDate { get; set; }
 
         /// <summary>
         /// User that initiated the order
         /// </summary>
         public virtual ApplicationUser User { get; set; }
-
-        public DateTime OrderDate { get; set; }
 
         public decimal Total { get; set; }
 

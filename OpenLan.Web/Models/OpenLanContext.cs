@@ -13,8 +13,10 @@ namespace OpenLan.Web.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         protected override void OnConfiguring(DbContextOptions options)
         {
@@ -37,23 +39,24 @@ namespace OpenLan.Web.Models
             builder.Entity<Ticket>().ForRelational().Table("Tickets");
             builder.Entity<Tournament>().ForRelational().Table("Tournaments");
             builder.Entity<TeamTournament>().ForRelational().Table("TeamTournaments");
+            builder.Entity<Post>().ForRelational().Table("Posts");
+            builder.Entity<ShoppingCart>().ForRelational().Table("ShoppingCarts");
 
-            ////// TODO: Remove this once convention-based relations work again
-            ////builder.Entity<Order>().OneToMany(o => o.OrderDetails, od => od.Order);
-            ////builder.Entity<Product>().OneToMany(p => p.OrderDetails, od => od.Product);
-            ////builder.Entity<Team>().OneToMany(t => t.Members, m => m.Team);
-            ////builder.Entity<Ticket>().OneToOne(t => t.Seat, s => s.Ticket);
-            ////builder.Entity<Order>().OneToMany(o => o.Tickets, t => t.Order);
-            ////builder.Entity<Team>().OneToMany(t => t.Tournaments, t => t.Team);
-            ////builder.Entity<Tournament>().OneToMany(t => t.Teams, t => t.Tournament);
-            ////builder.Entity<ApplicationUser>().OneToMany(a => a.Tickets, t => t.User);
-            ////builder.Entity<ApplicationUser>().OneToMany(a => a.Orders, o => o.User);
-            ////builder.Entity<CartItem>().ManyToOne(ci => ci.Product);
+            // Configure relations
+            builder.Entity<Team>().HasMany<ApplicationUser>(x => x.Members);
+            builder.Entity<Order>().HasMany<OrderDetail>(x => x.OrderDetails);
+            builder.Entity<Product>().HasMany<OrderDetail>(x => x.OrderDetails);
+            builder.Entity<Ticket>().HasOne<Seat>(x => x.Seat);
+            builder.Entity<Tournament>().HasMany<TeamTournament>(x => x.Teams);
+            builder.Entity<Team>().HasMany<TeamTournament>(x => x.Tournaments);
+            builder.Entity<ApplicationUser>().HasMany<Ticket>(x => x.Tickets);
+            builder.Entity<ApplicationUser>().HasMany<Order>(x => x.Orders);
+            builder.Entity<CartItem>().HasOne<Product>(x => x.Product);
 
-            ////// TODO: Remove this once the EF supports nullable types
-            //builder.Entity<ApplicationUser>().Property(x => x.TeamId).Required(false);
-            //builder.Entity<Team>().Property(x => x.OwnerUserId).Required(false);
-            //builder.Entity<Ticket>().Property(x => x.SeatId).Required(false);
+            // Configure nullable
+            ////builder.Entity<ApplicationUser>().Property(x => x.Team).Required(false);
+            ////builder.Entity<Team>().Property(x => x.OwnerUser).Required(false);
+            ////builder.Entity<Ticket>().Property(x => x.Seat).Required(false);
 
             base.OnModelCreating(builder);
         }

@@ -33,9 +33,7 @@ namespace OpenLan.Web.Models
         /// Generated token to join a team
         /// </summary>
         public string Token { get; set; }
-
-        public int OwnerUserId { get; set; } // TODO: Change for nullable type
-
+        
         /// <summary>
         /// User that owns the team
         /// </summary>

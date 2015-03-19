@@ -9,7 +9,7 @@ namespace OpenLan.Web.Models
     public class ShoppingCart
     {
         private readonly OpenLanContext _dbContext;
-        private string ShoppingCartId { get; set; }
+        private string Id { get; set; }
 
         public ShoppingCart(OpenLanContext dbContext)
         {
@@ -19,7 +19,7 @@ namespace OpenLan.Web.Models
         public static ShoppingCart GetCart(OpenLanContext db, HttpContext context)
         {
             var cart = new ShoppingCart(db);
-            cart.ShoppingCartId = cart.GetCartId(context);
+            cart.Id = cart.GetCartId(context);
             return cart;
         }
 
@@ -27,16 +27,19 @@ namespace OpenLan.Web.Models
         {
             // Get the matching cart and album instances
             var cartItem = _dbContext.CartItems.SingleOrDefault(
-                c => c.CartId == ShoppingCartId
-                && c.ProductId == product.Id);
+                c => c.Cart.Id == Id
+                && c.Product.Id == product.Id);
+
+            var cart = _dbContext.ShoppingCarts.SingleOrDefault(
+                x => x.Id == Id);
 
             if (cartItem == null)
             {
                 // Create a new cart item if no cart item exists
                 cartItem = new CartItem
                 {
-                    ProductId = product.Id,
-                    CartId = ShoppingCartId,
+                    Product = product,
+                    Cart = cart,
                     Count = 1,
                     DateCreated = DateTime.Now
                 };
@@ -54,7 +57,7 @@ namespace OpenLan.Web.Models
         {
             // Get the cart
             var cartItem = _dbContext.CartItems.Single(
-                cart => cart.CartId == ShoppingCartId
+                cart => cart.Cart.Id == Id
                 && cart.Id == id);
 
             int itemCount = 0;
@@ -77,14 +80,14 @@ namespace OpenLan.Web.Models
 
         public void EmptyCart()
         {
-            var cartItems = _dbContext.CartItems.Where(cart => cart.CartId == ShoppingCartId).ToArray();
+            var cartItems = _dbContext.CartItems.Where(cart => cart.Cart.Id == Id).ToArray();
             _dbContext.CartItems.Remove(cartItems);
         }
 
         public async Task<List<CartItem>> GetCartItems()
         {
             return await _dbContext.CartItems.
-                Where(cart => cart.CartId == ShoppingCartId).
+                Where(cart => cart.Cart.Id == Id).
                 Include(c => c.Product).
                 ToListAsync();
         }
@@ -93,7 +96,7 @@ namespace OpenLan.Web.Models
         {
             // Get the count of each item in the cart and sum them up
             return await (from cartItem in _dbContext.CartItems
-                          where cartItem.CartId == ShoppingCartId
+                          where cartItem.Cart.Id == Id
                           select cartItem.Count).SumAsync();
         }
 
@@ -105,8 +108,8 @@ namespace OpenLan.Web.Models
 
             // TODO: Use nav prop traversal instead of joins (EF #https://github.com/aspnet/EntityFramework/issues/325)
             return await (from cartItem in _dbContext.CartItems
-                          join product in _dbContext.Products on cartItem.ProductId equals product.Id
-                          where cartItem.CartId == ShoppingCartId
+                          join product in _dbContext.Products on cartItem.Product.Id equals product.Id
+                          where cartItem.Cart.Id == Id
                           select cartItem.Count * product.Price).SumAsync();
         }
 
@@ -119,19 +122,15 @@ namespace OpenLan.Web.Models
             // Iterate over the items in the cart, adding the order details for each
             foreach (var item in cartItems)
             {
-                //var album = _db.Albums.Find(item.AlbumId);
-                var album = _dbContext.Products.Single(p => p.Id == item.ProductId);
-
                 var orderDetail = new OrderDetail
                 {
-                    ProductId = item.ProductId,
-                    OrderId = order.Id,
-                    UnitPrice = album.Price,
+                    Product = item.Product,
+                    UnitPrice = item.Product.Price,
                     Quantity = item.Count,
                 };
 
                 // Set the order total of the shopping cart
-                orderTotal += (item.Count * album.Price);
+                orderTotal += (item.Count * item.Product.Price);
 
                 _dbContext.OrderDetails.Add(orderDetail);
             }
