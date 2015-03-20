@@ -8,10 +8,12 @@ namespace OpenLan.Web.Models
     public class Product
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         public string Name { get; set; }
+
+        public string Category { get; set; }
 
         [DataType(DataType.Url)]
         public string PictureUrl { get; set; }

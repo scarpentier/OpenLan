@@ -17,5 +17,10 @@ namespace OpenLan.Web.Controllers
         {
             return View(db.Products);
         }
+
+        public async Task<IActionResult> Browse()
+        {
+            return View(db.Products);
+        }
     }
 }

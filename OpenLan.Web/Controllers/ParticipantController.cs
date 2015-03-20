@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace OpenLan.Web.Controllers
 {
-    public class PlayerController : Controller
+    public class ParticipantController : Controller
     {
         private readonly OpenLanContext db;
 
-        public PlayerController(OpenLanContext context)
+        public ParticipantController(OpenLanContext context)
         {
             db = context;
         }

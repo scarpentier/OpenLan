@@ -72,18 +72,66 @@ namespace OpenLan.Web.Models
 
                 db.Products.Add(new Product
                 {
+                    Id = "lanbyoc",
                     Name = "Serious Lan BYOC",
-                    Price = 80
+                    Price = 80,
+                    Category = "Ticket",
+                    PictureUrl = "http://i.imgur.com/nX4zxx1.png",
+                    Description = "Secure your place at the upcomming Serious Lan by buying this ticket"
                 });
                 db.Products.Add(new Product
                 {
-                    Name = "SouthSec Early Bird",
-                    Price = 250
+                    Id = "lanbyocvip",
+                    Name = "Serious Lan BYOC VIP",
+                    Price = 130,
+                    Category = "Ticket",
+                    PictureUrl = "http://i.imgur.com/ixZkjT4.png",
+                    Description = "Secure your place at the upcomming Serious Lan by buying this ticket. You'll have the VIP treatment which includes extra space for your dual monitor setup and a backrub."
                 });
                 db.Products.Add(new Product
                 {
-                    Name = "CS Games Participant",
-                    Price = 100
+                    Id = "lanconsole",
+                    Name = "Serious Lan Console",
+                    Price = 20,
+                    Category = "Ticket",
+                    PictureUrl = "http://i.imgur.com/nX4zxx1.png",
+                    Description = "Not part of the #pcmasterrace? It's ok, nobody is perfect"
+                });
+                db.Products.Add(new Product
+                {
+                    Id = "lanvisitor",
+                    Name = "Serious Lan Visitor",
+                    Price = 10,
+                    Category = "Ticket",
+                    PictureUrl = "http://i.imgur.com/nX4zxx1.png",
+                    Description = "Be part of something without commitment! You'll be able to stay on-site for the whole duration of the event. Don't forget to sleep and shower!"
+                });
+                db.Products.Add(new Product
+                {
+                    Id = "serioustshirt",
+                    Name = "Serious Groupie T-Shirt",
+                    Price = 20,
+                    Category = "Product",
+                    PictureUrl = "http://i.imgur.com/khDSMd3.jpg",
+                    Description = "Sam himself wore this t-shirt. Now, we can't all be killing hordes of rabid aliens with a giant cannonball but at least you can wear this t-shirt"
+                });
+                db.Products.Add(new Product
+                {
+                    Id = "seriousmousepad",
+                    Name = "Serious Mousepad",
+                    Price = 15,
+                    Category = "Product",
+                    PictureUrl = "http://i.imgur.com/OnnN2rd.jpg",
+                    Description = "Like lube for your mouse, it's going to be an easier spread."
+                });
+                db.Products.Add(new Product
+                {
+                    Id = "seriousmousepadplacebo",
+                    Name = "Serious Mousepad Special Turbo Placebo Edition",
+                    Price = 80,
+                    Category = "Product",
+                    PictureUrl = "http://i.imgur.com/OnnN2rd.jpg",
+                    Description = "At more than 5 times the price of the standard one, you can be sure there's something special about it to justify this outrageous price!"
                 });
 
                 await db.SaveChangesAsync();

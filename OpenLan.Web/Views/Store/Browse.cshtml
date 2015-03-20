@@ -1,0 +1,24 @@
+﻿﻿@using OpenLan.Web.Models
+@model IEnumerable<Product>
+
+@{
+    ViewBag.Title = "Store";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    @foreach (var category in Model.GroupBy(x => x.Category))
+    {
+        <h3>@category.Key</h3>
+        foreach (var item in Model.Where(x => x.Category == category.Key))
+            {
+            <div class="col-md-6 col-sm-12">
+                <img src="@item.PictureUrl" style="width: 180px; float: left; padding-right: 15px" />
+                <b>@Html.DisplayFor(modelItem => item.Name)</b><br />
+                <span class="text-muted" style="font-size: normal">@Html.DisplayFor(modelItem => item.Description)</span><br />
+                @Html.DisplayFor(modelItem => item.Price) | @Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = item.Id })
+            </div>
+        }
+    }
+</div>

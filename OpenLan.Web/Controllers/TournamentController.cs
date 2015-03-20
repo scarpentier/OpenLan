@@ -15,13 +15,13 @@ namespace OpenLan.Web.Controllers
 
         public IActionResult Index()
         {
-            return View(db.Tournaments);
+            return View();
         }
 
         [AllowAnonymous]
         public IActionResult IndexPartial()
         {
-            return PartialView(db.Tournaments);
+            return PartialView(db.Tournaments.Include(x => x.Teams));
         }
     }
 }

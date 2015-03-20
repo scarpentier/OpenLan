@@ -41,7 +41,7 @@ namespace OpenLan.Web.Areas.Admin.Controllers
             return View(product);
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(string id)
         {
             var product = db.Products.Where(p => p.Id == id).FirstOrDefault();
 
@@ -67,14 +67,14 @@ namespace OpenLan.Web.Areas.Admin.Controllers
             return View(product);
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(string id)
         {
             var product = db.Products.Where(p => p.Id == id).FirstOrDefault();
             return View(product);
         }
 
         [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var product = db.Products.Where(p => p.Id == id).FirstOrDefault();
 

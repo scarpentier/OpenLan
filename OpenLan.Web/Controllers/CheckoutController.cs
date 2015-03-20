@@ -47,12 +47,14 @@ namespace OpenLan.Web.Controllers
                     order.UserId = Context.User.Identity.GetUserId();
                     order.OrderDate = DateTime.Now;
 
-                    //Add the Order
+                    // Add the Order
                     await _dbContext.Orders.AddAsync(order, Context.RequestAborted);
 
-                    //Process the order
+                    // Process the order
                     var cart = ShoppingCart.GetCart(_dbContext, Context);
                     await cart.CreateOrder(order);
+
+                    // If the product is a ticket, 
 
                     // Save all changes
                     await _dbContext.SaveChangesAsync(Context.RequestAborted);

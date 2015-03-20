@@ -37,7 +37,7 @@ namespace OpenLan.Web.Controllers
         //
         // GET: /ShoppingCart/AddToCart/5
 
-        public async Task<IActionResult> AddToCart(int id)
+        public async Task<IActionResult> AddToCart(string id)
         {
             // Retrieve the product from the database
             var addedProduct = _dbContext.Products
