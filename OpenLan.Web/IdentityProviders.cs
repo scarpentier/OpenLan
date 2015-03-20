@@ -16,7 +16,7 @@ namespace OpenLan.Web
 
         public Task SendAsync(IdentityMessage message, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // Plug in your service
+            // TODO: Plug in your service
             return Task.FromResult(0);
         }
     }
@@ -33,7 +33,7 @@ namespace OpenLan.Web
 
         public Task SendAsync(IdentityMessage message, CancellationToken cancellationToken = default(CancellationToken))
         {
-            // Plug in your service
+            // TODO: Plug in your service
             return Task.FromResult(0);
 
         }

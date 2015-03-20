@@ -14,11 +14,13 @@ namespace OpenLan.Web.Models
     {
         [DataType(DataType.Url)]
         public string Url { get; set; }
-        
+
+        public int? TeamId { get; set; }
+
         public virtual Team Team { get; set; }
 
-        public virtual List<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
 
-        public virtual List<Ticket> Tickets { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

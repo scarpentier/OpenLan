@@ -1,0 +1,23 @@
+﻿@using OpenLan.Web.Models
+@model Team
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (Model != null)
+{
+    @Html.Partial("StatusPartial")
+<hr/>
+}
+<h2>Registered Teams</h2>
+@if (Model == null)
+{
+    <div class="alert alert-warning">
+        <h4>You're not part of a team</h4>
+        <p></p>
+        <p><a class="btn btn-primary" href="/Team/Start">Create or join a team &raquo;</a></p>
+</div>
+<br>
+}
+@*@await Html.PartialAsync("IndexPartial")*@

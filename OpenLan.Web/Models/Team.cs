@@ -15,6 +15,10 @@ namespace OpenLan.Web.Models
         [Required]
         public string Name { get; set; }
 
+        public DateTime DateCreated { get; set; }
+
+        public string Tag { get; set; }
+
         /// <summary>
         /// URL to the team's website
         /// </summary>
@@ -42,11 +46,17 @@ namespace OpenLan.Web.Models
         /// <summary>
         /// Team's members
         /// </summary>
-        public virtual List<ApplicationUser> Members { get; set; }
+        public virtual ICollection<ApplicationUser> Members { get; set; }
 
         /// <summary>
         /// Tournaments in which the team is registered
         /// </summary>
-        public virtual List<TeamTournament> Tournaments { get; set; }
+        public virtual ICollection<TeamTournament> Tournaments { get; set; }
+
+        public Team()
+        {
+            DateCreated = DateTime.UtcNow;
+            Token = Guid.NewGuid().ToString();
+        }
     }
 }

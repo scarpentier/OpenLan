@@ -19,8 +19,8 @@ namespace OpenLan.Web.Models
 
         public decimal Total { get; set; }
 
-        public virtual List<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
-        public virtual List<Ticket> Tickets { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

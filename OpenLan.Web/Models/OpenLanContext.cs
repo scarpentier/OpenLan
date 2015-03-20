@@ -43,7 +43,12 @@ namespace OpenLan.Web.Models
             builder.Entity<ShoppingCart>().ForRelational().Table("ShoppingCarts");
 
             // Configure relations
-            builder.Entity<Team>().HasMany<ApplicationUser>(x => x.Members);
+            builder.Entity<Team>()
+                .HasMany(x => x.Members)
+                .WithOne(x => x.Team)
+                .ForeignKey(x => x.TeamId)
+                .Required(false);
+
             builder.Entity<Order>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Product>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Ticket>().HasOne<Seat>(x => x.Seat);
@@ -52,6 +57,9 @@ namespace OpenLan.Web.Models
             builder.Entity<ApplicationUser>().HasMany<Ticket>(x => x.Tickets);
             builder.Entity<ApplicationUser>().HasMany<Order>(x => x.Orders);
             builder.Entity<CartItem>().HasOne<Product>(x => x.Product);
+
+            // Configure delete cascade
+            // TODO: Not yet implemented in EF7. See https://github.com/aspnet/EntityFramework/issues/333
 
             // Configure nullable
             ////builder.Entity<ApplicationUser>().Property(x => x.Team).Required(false);

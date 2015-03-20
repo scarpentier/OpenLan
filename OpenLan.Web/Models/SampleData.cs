@@ -116,9 +116,13 @@ namespace OpenLan.Web.Models
             {
                 user = new ApplicationUser { UserName = configuration.Get<string>("defaultAdminUserName") };
                 await userManager.CreateAsync(user, configuration.Get<string>("defaultAdminPassword"));
-                //await userManager.AddToRoleAsync(user, adminRole);
+                
+                // TODO: Wait for EF to support this
+                ////await userManager.AddToRoleAsync(user, adminRole);
+
                 await userManager.AddClaimAsync(user, new Claim("ManageProducts", "Allowed"));
                 await userManager.AddClaimAsync(user, new Claim("ManageTournaments", "Allowed"));
+                await userManager.AddClaimAsync(user, new Claim("ManageTeams", "Allowed"));
             }
         }
 

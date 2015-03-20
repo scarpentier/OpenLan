@@ -37,6 +37,6 @@ namespace OpenLan.Web.Models
         [DataType(DataType.Url)]
         public string Url { get; set; }
 
-        public virtual List<TeamTournament> Teams { get; set; }
+        public virtual ICollection<TeamTournament> Teams { get; set; }
     }
 }

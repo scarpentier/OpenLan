@@ -8,7 +8,6 @@ namespace OpenLan.Web.Models
         [Key]
         public int Id { get; set; }
 
-
         /// <summary>
         /// Origin order for the ticket
         /// </summary>

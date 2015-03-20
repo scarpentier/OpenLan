@@ -55,6 +55,7 @@ namespace OpenLan.Web
             {
                 options.AddPolicy("ManageTournaments", new AuthorizationPolicyBuilder().RequiresClaim("ManageTournaments", "Allowed").Build());
                 options.AddPolicy("ManageProducts", new AuthorizationPolicyBuilder().RequiresClaim("ManageProducts", "Allowed").Build());
+                options.AddPolicy("ManageTeams", new AuthorizationPolicyBuilder().RequiresClaim("ManageTeams", "Allowed").Build());
             });
 
         }

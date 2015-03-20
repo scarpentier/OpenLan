@@ -28,7 +28,7 @@ namespace OpenLan.Web.Models
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
-        public virtual List<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
         /// <summary>
         /// TODO: Temporary hack to populate the orderdetails until EF does this automatically. 
