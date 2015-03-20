@@ -5,31 +5,64 @@
     ViewBag.Title = "My Clan";
 }
 
-@if (Model == null)
+@if (!string.IsNullOrEmpty(Model.PictureUrl))
 {
-    <h2>My Clan</h2>
-    <div class="alert alert-warning">
-        <h4>You're not part of a clan</h4>
-        <p></p>
-        <p><a class="btn btn-primary" href="/Clan/Start">Create or join a clan &raquo;</a></p>
-    </div>
+    <img src="@Model.PictureUrl" style="width: 150px; height: 150px; float: left; padding-right: 10px" />
 }
-else {
-    <h2>@Model.Name</h2>
-    <div class="row">
-        <div class="col-md-3">
-            <b>Members</b><br />
-            @foreach (var member in Model.Members)
-            {
-                @member.UserName<br />
-            }
-        </div>
-        <div class="col-md-6">
-            <p>Your token is <code>@Model.Token</code></p>
-        </div>
-    </div>
 
-    <p>
-        @Html.ActionLink("Transfer Leadership", "TransferLeadership")
-    </p>
+<h2>@Model.Name</h2>
+@if (!string.IsNullOrEmpty(Model.Tagline))
+{
+    <span class="text-muted">@Model.Tagline</span>
 }
+<p>
+    Your token is <code>@Model.Token</code>
+@if (!string.IsNullOrEmpty(Model.Tag))
+{
+    <br /><span>Your clan tag is @Model.Tag</span>
+}
+</p>
+@Html.ActionLink("Edit clan properties", "Edit", routeValues: new { Id = Model.Id })
+
+<h3>Tournaments</h3>
+<table class="table table-striped">
+    <tr>
+        <th>Tournament</th>
+        <th>Team Name</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model.Tournaments)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tournament.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit Name", "Edit", "TeamTournament", routeValues: new { Id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", "TeamTournament", routeValues: new { Id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+<h3>Members</h3>
+
+<table class="table table-striped">
+    <tr>
+        <th>Name</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model.Members)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+        </tr>
+    }
+</table>

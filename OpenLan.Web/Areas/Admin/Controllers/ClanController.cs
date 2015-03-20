@@ -84,7 +84,6 @@ namespace OpenLan.Web.Areas.Admin.Controllers {
             return View(Clan);
         }
 
-        // GET: /Clan/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -99,7 +98,6 @@ namespace OpenLan.Web.Areas.Admin.Controllers {
             return View(Clan);
         }
 
-        // POST: /Clan/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

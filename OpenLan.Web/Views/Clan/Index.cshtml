@@ -16,7 +16,7 @@
     <p>You're already part of <b><a href="/Clan/Manage">@ViewBag.UserClan.Name</a></b></p>
 }
 
-@if (Model == null)
+@if (Model.Count() == 0)
 {
     <caption>There are no clans currently registered</caption>
 }
@@ -38,7 +38,7 @@ else
                 <td>
                     @Html.DisplayFor(modelItem => item, "ClanName")
                 </td>
-                <td>@Html.DisplayFor(modelItem => item.Members.Count)</td>
+                @*<td>@Html.DisplayFor(modelItem => item.Members.Count)</td>*@
             </tr>
         }
     </table>

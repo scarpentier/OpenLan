@@ -7,8 +7,6 @@
 
 <h2>@ViewBag.Title</h2>
 
-@*@await Html.PartialAsync("IndexPartial")*@
-
 <div class="row">
     @foreach (var tournament in Model)
     {
@@ -29,7 +27,9 @@
                 <br /><i>No team currently registered in this tournament.</i>
             }
             <br />
-            @Html.ActionLink("Register now!", "RegisterClan", "Tournament", new { id = tournament.Id }, new { @class = "btn btn-default" })
+            @if (ViewBag.IsClanOwner) {
+                @Html.ActionLink("Register your clan", "RegisterClan", "TeamTournament", new { id = tournament.Id })
+            }
         </div>
     }
 </div>

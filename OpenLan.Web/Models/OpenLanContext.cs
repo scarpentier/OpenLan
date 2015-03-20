@@ -54,6 +54,9 @@ namespace OpenLan.Web.Models
                 .WithOne(x => x.Clan)
                 .ForeignKey(x => x.ClanId);
 
+            builder.Entity<TeamTournament>()
+                .HasMany(x => x.AssignedMembers);
+
             builder.Entity<Order>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Product>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Ticket>().HasOne<Seat>(x => x.Seat);

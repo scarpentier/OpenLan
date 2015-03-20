@@ -9,6 +9,8 @@ namespace OpenLan.Web.Models
         [Key]
         public int Id { get; set; }
 
+        public string Name { get; set; }
+
         public int ClanId { get; set; }
 
         public virtual Clan Clan { get; set; }

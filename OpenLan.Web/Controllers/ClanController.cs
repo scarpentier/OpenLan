@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using OpenLan.Web.Models;
 using System.Threading.Tasks;
+using System.Security.Principal;
 
 namespace OpenLan.Web.Controllers
 {
@@ -24,18 +25,22 @@ namespace OpenLan.Web.Controllers
                 ViewBag.UserClan = clan;
             }
 
-            return View(db.Clans.Include(x => x.Members));
+            return View(db.Clans);
         }
 
         public async Task<IActionResult> Manage()
         {
             // Get current user
-            var user = await db.Users.Include(x => x.Clan).SingleAsync(x => x.UserName == User.Identity.Name);
+            var user = await db.Users
+                .Include(x => x.Clan)
+                .ThenInclude(x => x.Tournaments)
+                .ThenInclude(x => x.Tournament)
+                .SingleAsync(x => x.UserName == User.Identity.Name);
 
             // Make sure user is authenticated and has a clan
             if (user == null || user.Clan == null)
             {
-                return new HttpStatusCodeResult(400);
+                return RedirectToAction("Start");
             }
 
             return View(user.Clan);
@@ -143,6 +148,48 @@ namespace OpenLan.Web.Controllers
             await db.SaveChangesAsync();
 
             return RedirectToAction("Index", "ClanStunt");
+        }
+
+        // GET: /Clan/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            // Make sure the user is logged in
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            // Get the current user object
+            var user = await db.Users.Include(x => x.Clan).SingleAsync(x => x.UserName == User.Identity.Name);
+
+            // Make sure the current user is the clan's leader
+            if (user.Clan.OwnerUserId != User.Identity.GetUserId())
+                return new HttpStatusCodeResult(403);
+
+            return View(user.Clan);
+        }
+
+        // POST: /Clan/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(new[] { "Id", "Name", "PictureUrl", "Tag", "Tagline", "Url" })] Clan clan)
+        {
+            if (ModelState.IsValid)
+            {
+                var t = await db.Clans.SingleAsync(x => x.Id == clan.Id);
+
+                t.Name = clan.Name;
+                t.Token = clan.Token;
+                t.PictureUrl = clan.PictureUrl;
+                t.Tag = clan.Tag;
+                t.Tagline = clan.Tagline;
+                t.Url = clan.Url;
+
+                db.Entry(t).SetState(Microsoft.Data.Entity.EntityState.Modified);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Manage");
+            }
+            return View(clan);
         }
 
         public async Task<IActionResult> TransferLeadership()
