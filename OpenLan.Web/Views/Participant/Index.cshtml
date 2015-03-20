@@ -1,0 +1,10 @@
+﻿﻿@using OpenLan.Web.Models
+@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "Participants";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@await Html.PartialAsync("IndexPartial")
