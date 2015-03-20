@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OpenLan.Web.Models
 {
-    public class Team
+    public class Clan
     {
         [Key]
         public int Id { get; set; }
 
         /// <summary>
-        /// Name of the team
+        /// Name of the clan
         /// </summary>
         [Required]
         public string Name { get; set; }
@@ -20,7 +20,7 @@ namespace OpenLan.Web.Models
         public string Tag { get; set; }
 
         /// <summary>
-        /// URL to the team's website
+        /// URL to the clan's website
         /// </summary>
         [DataType(DataType.Url)]
         public string Url { get; set; }
@@ -29,31 +29,31 @@ namespace OpenLan.Web.Models
         public string PictureUrl { get; set; }
 
         /// <summary>
-        /// Team's tagline
+        /// Clan's tagline
         /// </summary>
         public string Tagline { get; set; }
 
         /// <summary>
-        /// Generated token to join a team
+        /// Generated token to join a clan
         /// </summary>
         public string Token { get; set; }
         
         /// <summary>
-        /// User that owns the team
+        /// User that owns the clan
         /// </summary>
         public virtual ApplicationUser OwnerUser { get; set; }
 
         /// <summary>
-        /// Team's members
+        /// Clan's members
         /// </summary>
         public virtual ICollection<ApplicationUser> Members { get; set; }
 
         /// <summary>
-        /// Tournaments in which the team is registered
+        /// Tournaments in which the clan is registered
         /// </summary>
         public virtual ICollection<TeamTournament> Tournaments { get; set; }
 
-        public Team()
+        public Clan()
         {
             DateCreated = DateTime.UtcNow;
             Token = Guid.NewGuid().ToString();

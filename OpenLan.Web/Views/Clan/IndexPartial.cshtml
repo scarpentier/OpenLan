@@ -1,8 +1,8 @@
-﻿@model IEnumerable<OpenLan.Web.Models.Team>
+﻿@model IEnumerable<OpenLan.Web.Models.Clan>
 
 @if (Model == null)
 {
-    <caption>There are no teams currently registered</caption>
+    <caption>There are no clans currently registered</caption>
 }
 else
 {
@@ -20,7 +20,7 @@ else
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item, "TeamName")
+                    @Html.DisplayFor(modelItem => item, "ClanName")
                 </td>
                 <td>@Html.DisplayFor(modelItem => item.Members.Count)</td>
             </tr>

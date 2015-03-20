@@ -7,38 +7,38 @@ using OpenLan.Web.Models;
 namespace OpenLan.Web.Areas.Admin.Controllers {
 
     [Area("Admin")]
-    [Authorize("ManageTeams")]
-    public class TeamController : Controller
+    [Authorize("ManageClans")]
+    public class ClanController : Controller
     {
         private readonly OpenLanContext db;
 
-        public TeamController(OpenLanContext context)
+        public ClanController(OpenLanContext context)
         {
             db = context;
         }
 
-        // GET: /Team/
+        // GET: /Clan/
         public IActionResult Index()
         {
-            return View(db.Teams.OrderByDescending(x => x.Members));
+            return View(db.Clans.OrderByDescending(x => x.Members));
         }
 
-         // GET: /Team/Details/5
+         // GET: /Clan/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(400);
             }
-            Team team = db.Teams.SingleOrDefault(x => x.Id == id);
-            if (team == null)
+            Clan Clan = db.Clans.SingleOrDefault(x => x.Id == id);
+            if (Clan == null)
             {
                 return HttpNotFound();
             }
-            return View(team);
+            return View(Clan);
         }
 
-        // GET: /Team/Create
+        // GET: /Clan/Create
         public ActionResult CreatePartial()
         {
             if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
@@ -46,71 +46,71 @@ namespace OpenLan.Web.Areas.Admin.Controllers {
             return PartialView();
         }
 
-        // GET: /Team/Edit/5
+        // GET: /Clan/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(400);
             }
-            Team team = db.Teams.Single(x => x.Id == id);
-            if (team == null)
+            Clan Clan = db.Clans.Single(x => x.Id == id);
+            if (Clan == null)
             {
                 return HttpNotFound();
             }
-            return View(team);
+            return View(Clan);
         }
 
-        // POST: /Team/Edit/5
+        // POST: /Clan/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(new [] { "Id","Name","Token","Tagline","Url"})] Team team)
+        public ActionResult Edit([Bind(new [] { "Id","Name","Token","Tagline","Url"})] Clan Clan)
         {
             if (ModelState.IsValid)
             {
-                var t = db.Teams.Single(x => x.Id == team.Id);
+                var t = db.Clans.Single(x => x.Id == Clan.Id);
 
-                t.Name = team.Name;
-                t.Token = team.Token;
-                t.Tagline = team.Tagline;
-                t.Url = team.Url;
+                t.Name = Clan.Name;
+                t.Token = Clan.Token;
+                t.Tagline = Clan.Tagline;
+                t.Url = Clan.Url;
 
                 db.Entry(t).SetState(Microsoft.Data.Entity.EntityState.Modified);
                 db.SaveChanges();
                 return RedirectToAction("IndexAdmin");
             }
-            return View(team);
+            return View(Clan);
         }
 
-        // GET: /Team/Delete/5
+        // GET: /Clan/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(400);
             }
-            Team team = db.Teams.Single(x => x.Id == id);
-            if (team == null)
+            Clan Clan = db.Clans.Single(x => x.Id == id);
+            if (Clan == null)
             {
                 return HttpNotFound();
             }
-            return View(team);
+            return View(Clan);
         }
 
-        // POST: /Team/Delete/5
+        // POST: /Clan/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Team team = db.Teams.Single(x => x.Id == id);
+            Clan Clan = db.Clans.Single(x => x.Id == id);
 
-            // Kick everyone from that team
+            // Kick everyone from that Clan
             // TODO: Do with CASCADE NULL instead
-            team.Members.ToList().ForEach(x => x.Team = null);
+            Clan.Members.ToList().ForEach(x => x.Clan = null);
 
-            db.Teams.Remove(team);
+            db.Clans.Remove(Clan);
             db.SaveChanges();
             return RedirectToAction("IndexAdmin");
         }
@@ -119,8 +119,8 @@ namespace OpenLan.Web.Areas.Admin.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult DeleteAll()
         {
-            foreach (var team in db.Teams)
-                db.Teams.Remove(team);
+            foreach (var Clan in db.Clans)
+                db.Clans.Remove(Clan);
 
             db.SaveChanges();
             return View("Data");

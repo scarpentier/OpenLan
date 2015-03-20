@@ -1,0 +1,24 @@
+﻿@model OpenLan.Web.Models.Clan
+
+@{
+    ViewBag.Title = "Create or join an existing clan";
+}
+
+<h2>You better get ready!</h2>
+
+You must be part of a clan to participate in this event. Either join an existing clan or create a new one.
+
+<hr/>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Join an existing clan</h4>
+        <p class="text-muted">If your clan is already created, your clan leader shoud have given you the token. It looks like this <code>5d3988c7-f14d-4aef-8c9d-c01467c801e2</code></p>
+        @Html.Partial("JoinPartial")
+    </div>
+    <div class="col-md-6">
+        <h4>Create a new clan</h4>
+        <p class="text-muted">Create a new clan if it is not already created. Send the <b>token</b> to your clan members so they can join it!</p>
+        @Html.Partial("CreatePartial")
+    </div>
+</div>

@@ -15,9 +15,9 @@ namespace OpenLan.Web.Models
         [DataType(DataType.Url)]
         public string Url { get; set; }
 
-        public int? TeamId { get; set; }
+        public int? ClanId { get; set; }
 
-        public virtual Team Team { get; set; }
+        public virtual Clan Clan { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
 

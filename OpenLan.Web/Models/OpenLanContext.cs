@@ -7,7 +7,7 @@ namespace OpenLan.Web.Models
 {
     public class OpenLanContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Team> Teams { get; set; }
+        public DbSet<Clan> Clans { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -35,7 +35,7 @@ namespace OpenLan.Web.Models
             builder.Entity<OrderDetail>().ForRelational().Table("OrderDetails");
             builder.Entity<Product>().ForRelational().Table("Products");
             builder.Entity<Seat>().ForRelational().Table("Seats");
-            builder.Entity<Team>().ForRelational().Table("Teams");
+            builder.Entity<Clan>().ForRelational().Table("Clans");
             builder.Entity<Ticket>().ForRelational().Table("Tickets");
             builder.Entity<Tournament>().ForRelational().Table("Tournaments");
             builder.Entity<TeamTournament>().ForRelational().Table("TeamTournaments");
@@ -43,17 +43,17 @@ namespace OpenLan.Web.Models
             builder.Entity<ShoppingCart>().ForRelational().Table("ShoppingCarts");
 
             // Configure relations
-            builder.Entity<Team>()
+            builder.Entity<Clan>()
                 .HasMany(x => x.Members)
-                .WithOne(x => x.Team)
-                .ForeignKey(x => x.TeamId)
+                .WithOne(x => x.Clan)
+                .ForeignKey(x => x.ClanId)
                 .Required(false);
 
             builder.Entity<Order>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Product>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Ticket>().HasOne<Seat>(x => x.Seat);
             builder.Entity<Tournament>().HasMany<TeamTournament>(x => x.Teams);
-            builder.Entity<Team>().HasMany<TeamTournament>(x => x.Tournaments);
+            builder.Entity<Clan>().HasMany<TeamTournament>(x => x.Tournaments);
             builder.Entity<ApplicationUser>().HasMany<Ticket>(x => x.Tickets);
             builder.Entity<ApplicationUser>().HasMany<Order>(x => x.Orders);
             builder.Entity<CartItem>().HasOne<Product>(x => x.Product);

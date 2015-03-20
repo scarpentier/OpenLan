@@ -1,8 +1,8 @@
 ﻿@using OpenLan.Web.Models
-@model IEnumerable<Team>
+@model IEnumerable<Clan>
 
 @{
-    ViewBag.Title = "Manage Teams";
+    ViewBag.Title = "Manage Clans";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -25,7 +25,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item, "TeamName")
+                @Html.DisplayFor(modelItem => item, "ClanName")
             </td>
             <td>@Html.DisplayFor(modelItem => item.Members.Count)</td>
             <td>

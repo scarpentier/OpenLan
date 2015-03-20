@@ -1,0 +1,16 @@
+﻿@model OpenLan.Web.Models.Clan
+
+@{
+    ViewBag.Title = "Thanks!";
+}
+
+<h2>Welcome, @Html.DisplayFor(model => model.Name)!</h2>
+
+<p class="bg-success">
+    Your clan was created successfully
+</p>
+
+Your clan's access code is: <code><b>@Html.DisplayFor(model => model.Token)</b></code>. Share this code with your teammates. They'll need it to join your clan!
+
+<hr/>
+<a class="btn btn-success" href="/Clan">Manage your clan! &raquo;</a>

@@ -1,5 +1,5 @@
 ﻿@using OpenLan.Web.Models
-@model Team
+@model Clan
 
 @{
     ViewBag.Title = "Index";
@@ -10,13 +10,13 @@
     @Html.Partial("StatusPartial")
 <hr/>
 }
-<h2>Registered Teams</h2>
+<h2>Registered Clans</h2>
 @if (Model == null)
 {
     <div class="alert alert-warning">
-        <h4>You're not part of a team</h4>
+        <h4>You're not part of a clan</h4>
         <p></p>
-        <p><a class="btn btn-primary" href="/Team/Start">Create or join a team &raquo;</a></p>
+        <p><a class="btn btn-primary" href="/Clan/Start">Create or join a clan &raquo;</a></p>
 </div>
 <br>
 }

@@ -6,35 +6,35 @@ using OpenLan.Web.Models;
 
 namespace OpenLan.Web.Controllers
 {
-    public class TeamController : Controller
+    public class ClanController : Controller
     {
         private readonly OpenLanContext db;
 
-        public TeamController(OpenLanContext context)
+        public ClanController(OpenLanContext context)
         {
             db = context;
         }
 
         public ActionResult Index()
         {
-            Team team = null;
+            Clan clan = null;
 
             // Get current user
             var username = User.Identity.Name;
-            var user = db.Users.Include(x => x.Team).Single(x => x.UserName == User.Identity.Name); // Might be null
+            var user = db.Users.Include(x => x.Clan).Single(x => x.UserName == User.Identity.Name); // Might be null
 
-            // Make sure user is authenticated and has a team
-            if (user != null && user.Team != null)
+            // Make sure user is authenticated and has a clan
+            if (user != null && user.Clan != null)
             {
-                team = user.Team;
+                clan = user.Clan;
             }
 
-            return View(team);
+            return View(clan);
         }
 
         public IActionResult IndexPartial()
         {
-            return PartialView(db.Teams);
+            return PartialView(db.Clans);
         }
 
         public IActionResult ShowToken(int? id)
@@ -43,27 +43,27 @@ namespace OpenLan.Web.Controllers
             {
                 return new HttpStatusCodeResult(400);
             }
-            Team team = db.Teams.SingleOrDefault(x => x.Id == id);
-            if (team == null)
+            Clan clan = db.Clans.SingleOrDefault(x => x.Id == id);
+            if (clan == null)
             {
                 return HttpNotFound();
             }
-            return this.PartialView(team);
+            return this.PartialView(clan);
         }
 
         public ActionResult Start()
         {
             if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
 
-            // Redirect to team management if user is already part of a team
+            // Redirect to clan management if user is already part of a clan
             var currentUser = db.Users.Single(x => x.UserName == User.Identity.Name);
-            if (currentUser.TeamId != null)
-                return RedirectToAction("Manage", "Team");
+            if (currentUser.ClanId != null)
+                return RedirectToAction("Manage", "Clan");
 
             return View();
         }
 
-        // GET: /Team/Create
+        // GET: /Clan/Create
         public ActionResult CreatePartial()
         {
             if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
@@ -71,44 +71,44 @@ namespace OpenLan.Web.Controllers
             return PartialView();
         }
 
-        // POST: /Team/Create
+        // POST: /Clan/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(new [] { "Id","Name"})] Team team)
+        public ActionResult Create([Bind(new [] { "Id","Name"})] Clan clan)
         {
             if (ModelState.IsValid)
             {
-                // Make sure the team is not already there
-                if (db.Teams.FirstOrDefault(x => x.Name == team.Name) != null)
+                // Make sure the clan is not already there
+                if (db.Clans.FirstOrDefault(x => x.Name == clan.Name) != null)
                 {
-                    ModelState.AddModelError("Name", "Team name already exists");
-                    return View("Start", team);
+                    ModelState.AddModelError("Name", "Clan name already exists");
+                    return View("Start", clan);
                 }
 
                 // Add current user as leader and member
                 var currentUser = db.Users.Single(x => x.UserName == User.Identity.Name);
-                currentUser.Team = team;
-                team.OwnerUser = currentUser;
-                team.Members = new List<ApplicationUser> { currentUser };
+                currentUser.Clan = clan;
+                clan.OwnerUser = currentUser;
+                clan.Members = new List<ApplicationUser> { currentUser };
                 
-                db.Teams.Add(team);
+                db.Clans.Add(clan);
                 db.SaveChanges();
 
                 return RedirectToAction("CreateDone");
             }
 
-            return PartialView("CreatePartial", team);
+            return PartialView("CreatePartial", clan);
         }
 
         public ActionResult CreateDone()
         {
-            var user = db.Users.Include(x => x.Team).Single(x => x.UserName == User.Identity.Name);
-            return View(user.Team);
+            var user = db.Users.Include(x => x.Clan).Single(x => x.UserName == User.Identity.Name);
+            return View(user.Clan);
         }
 
-        // GET: /Team/Join
+        // GET: /Clan/Join
         public ActionResult JoinPartial()
         {
             if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
@@ -116,7 +116,7 @@ namespace OpenLan.Web.Controllers
             return PartialView();
         }
 
-        // GET: /Team/Join/password
+        // GET: /Clan/Join/password
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Join([Bind(new[] { "Token" })] string token)
@@ -126,19 +126,19 @@ namespace OpenLan.Web.Controllers
 
             // TODO: Qu'est-ce qui arrive quand ce user est déjà membre d'une équipe?
 
-            // Get Team
-            var team = db.Teams.FirstOrDefault(t => t.Token == token);
-            if (team == null)
+            // Get Clan
+            var clan = db.Clans.FirstOrDefault(t => t.Token == token);
+            if (clan == null)
             {
                 ModelState.AddModelError("Token", "This token does not exist");
                 return View("Start");
             }
 
-            // Add user to team and save changes
-            team.Members.Add(user);
+            // Add user to clan and save changes
+            clan.Members.Add(user);
             db.SaveChanges();
 
-            return RedirectToAction("Index", "TeamStunt");
+            return RedirectToAction("Index", "ClanStunt");
         }
 
         public ActionResult Leave()
