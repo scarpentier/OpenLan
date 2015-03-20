@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using OpenLan.Web.Models;
+using System.Threading.Tasks;
 
 namespace OpenLan.Web.Controllers
 {
@@ -15,13 +16,13 @@ namespace OpenLan.Web.Controllers
             db = context;
         }
 
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
             Clan clan = null;
 
             // Get current user
             var username = User.Identity.Name;
-            var user = db.Users.Include(x => x.Clan).Single(x => x.UserName == User.Identity.Name); // Might be null
+            var user = await db.Users.Include(x => x.Clan).SingleAsync(x => x.UserName == User.Identity.Name); // Might be null
 
             // Make sure user is authenticated and has a clan
             if (user != null && user.Clan != null)
@@ -32,18 +33,18 @@ namespace OpenLan.Web.Controllers
             return View(clan);
         }
 
-        public IActionResult IndexPartial()
+        public async Task<IActionResult> IndexPartial()
         {
             return PartialView(db.Clans);
         }
 
-        public IActionResult ShowToken(int? id)
+        public async Task<IActionResult> ShowToken(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(400);
             }
-            Clan clan = db.Clans.SingleOrDefault(x => x.Id == id);
+            Clan clan = await db.Clans.SingleOrDefaultAsync(x => x.Id == id);
             if (clan == null)
             {
                 return HttpNotFound();
@@ -51,12 +52,12 @@ namespace OpenLan.Web.Controllers
             return this.PartialView(clan);
         }
 
-        public ActionResult Start()
+        public async Task<IActionResult> Start()
         {
             if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
 
             // Redirect to clan management if user is already part of a clan
-            var currentUser = db.Users.Single(x => x.UserName == User.Identity.Name);
+            var currentUser = await db.Users.SingleAsync(x => x.UserName == User.Identity.Name);
             if (currentUser.ClanId != null)
                 return RedirectToAction("Manage", "Clan");
 
@@ -64,7 +65,7 @@ namespace OpenLan.Web.Controllers
         }
 
         // GET: /Clan/Create
-        public ActionResult CreatePartial()
+        public async Task<IActionResult> CreatePartial()
         {
             if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
 
@@ -76,25 +77,25 @@ namespace OpenLan.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(new [] { "Id","Name"})] Clan clan)
+        public async Task<IActionResult> Create([Bind(new [] { "Id","Name"})] Clan clan)
         {
             if (ModelState.IsValid)
             {
                 // Make sure the clan is not already there
-                if (db.Clans.FirstOrDefault(x => x.Name == clan.Name) != null)
+                if (await db.Clans.FirstOrDefaultAsync(x => x.Name == clan.Name) != null)
                 {
                     ModelState.AddModelError("Name", "Clan name already exists");
                     return View("Start", clan);
                 }
 
                 // Add current user as leader and member
-                var currentUser = db.Users.Single(x => x.UserName == User.Identity.Name);
+                var currentUser = await db.Users.SingleAsync(x => x.UserName == User.Identity.Name);
                 currentUser.Clan = clan;
                 clan.OwnerUser = currentUser;
                 clan.Members = new List<ApplicationUser> { currentUser };
                 
-                db.Clans.Add(clan);
-                db.SaveChanges();
+                await db.Clans.AddAsync(clan);
+                await db.SaveChangesAsync();
 
                 return RedirectToAction("CreateDone");
             }
@@ -102,14 +103,14 @@ namespace OpenLan.Web.Controllers
             return PartialView("CreatePartial", clan);
         }
 
-        public ActionResult CreateDone()
+        public async Task<IActionResult> CreateDone()
         {
-            var user = db.Users.Include(x => x.Clan).Single(x => x.UserName == User.Identity.Name);
+            var user = await db.Users.Include(x => x.Clan).SingleAsync(x => x.UserName == User.Identity.Name);
             return View(user.Clan);
         }
 
         // GET: /Clan/Join
-        public ActionResult JoinPartial()
+        public async Task<IActionResult> JoinPartial()
         {
             if (!User.Identity.IsAuthenticated) return RedirectToAction("Login", "Account");
 
@@ -119,15 +120,15 @@ namespace OpenLan.Web.Controllers
         // GET: /Clan/Join/password
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Join([Bind(new[] { "Token" })] string token)
+        public async Task<IActionResult> Join([Bind(new[] { "Token" })] string token)
         {
             // Get User
-            var user = db.Users.Single(x => x.UserName == User.Identity.Name);
+            var user = await db.Users.SingleAsync(x => x.UserName == User.Identity.Name);
 
             // TODO: Qu'est-ce qui arrive quand ce user est déjà membre d'une équipe?
 
             // Get Clan
-            var clan = db.Clans.FirstOrDefault(t => t.Token == token);
+            var clan = await db.Clans.FirstOrDefaultAsync(t => t.Token == token);
             if (clan == null)
             {
                 ModelState.AddModelError("Token", "This token does not exist");
@@ -136,12 +137,12 @@ namespace OpenLan.Web.Controllers
 
             // Add user to clan and save changes
             clan.Members.Add(user);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return RedirectToAction("Index", "ClanStunt");
         }
 
-        public ActionResult Leave()
+        public async Task<IActionResult> Leave()
         {
             // TODO: Implement
             throw new NotImplementedException();

@@ -25,13 +25,10 @@ namespace OpenLan.Web.Models
 
         public void AddToCart(Product product)
         {
-            // Get the matching cart and album instances
+            // Get the matching cart and product instances
             var cartItem = _dbContext.CartItems.SingleOrDefault(
-                c => c.Cart.Id == Id
-                && c.Product.Id == product.Id);
-
-            var cart = _dbContext.ShoppingCarts.SingleOrDefault(
-                x => x.Id == Id);
+                c => c.CartId == Id
+                && c.ProductId == product.Id);
 
             if (cartItem == null)
             {
@@ -39,7 +36,7 @@ namespace OpenLan.Web.Models
                 cartItem = new CartItem
                 {
                     Product = product,
-                    Cart = cart,
+                    CartId = Id,
                     Count = 1,
                     DateCreated = DateTime.Now
                 };
@@ -57,7 +54,7 @@ namespace OpenLan.Web.Models
         {
             // Get the cart
             var cartItem = _dbContext.CartItems.Single(
-                cart => cart.Cart.Id == Id
+                cart => cart.CartId == Id
                 && cart.Id == id);
 
             int itemCount = 0;
@@ -80,14 +77,14 @@ namespace OpenLan.Web.Models
 
         public void EmptyCart()
         {
-            var cartItems = _dbContext.CartItems.Where(cart => cart.Cart.Id == Id).ToArray();
+            var cartItems = _dbContext.CartItems.Where(cart => cart.CartId == Id).ToArray();
             _dbContext.CartItems.Remove(cartItems);
         }
 
         public async Task<List<CartItem>> GetCartItems()
         {
             return await _dbContext.CartItems.
-                Where(cart => cart.Cart.Id == Id).
+                Where(cart => cart.CartId == Id).
                 Include(c => c.Product).
                 ToListAsync();
         }
@@ -96,7 +93,7 @@ namespace OpenLan.Web.Models
         {
             // Get the count of each item in the cart and sum them up
             return await (from cartItem in _dbContext.CartItems
-                          where cartItem.Cart.Id == Id
+                          where cartItem.CartId == Id
                           select cartItem.Count).SumAsync();
         }
 
@@ -108,8 +105,8 @@ namespace OpenLan.Web.Models
 
             // TODO: Use nav prop traversal instead of joins (EF #https://github.com/aspnet/EntityFramework/issues/325)
             return await (from cartItem in _dbContext.CartItems
-                          join product in _dbContext.Products on cartItem.Product.Id equals product.Id
-                          where cartItem.Cart.Id == Id
+                          join product in _dbContext.Products on cartItem.ProductId equals product.Id
+                          where cartItem.CartId == Id
                           select cartItem.Count * product.Price).SumAsync();
         }
 

@@ -13,7 +13,6 @@ namespace OpenLan.Web.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Post> Posts { get; set; }
@@ -40,7 +39,6 @@ namespace OpenLan.Web.Models
             builder.Entity<Tournament>().ForRelational().Table("Tournaments");
             builder.Entity<TeamTournament>().ForRelational().Table("TeamTournaments");
             builder.Entity<Post>().ForRelational().Table("Posts");
-            builder.Entity<ShoppingCart>().ForRelational().Table("ShoppingCarts");
 
             // Configure relations
             builder.Entity<Clan>()

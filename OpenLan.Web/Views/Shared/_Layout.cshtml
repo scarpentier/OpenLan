@@ -21,6 +21,7 @@
             </div>
             <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Store", "Index", "Store")</li>
                         <li>@Html.ActionLink("Tournaments", "Index", "Tournament")</li>
                         <li>@Html.ActionLink("Clans", "Index", "Clan")</li>
                         <li class="dropdown">
@@ -31,6 +32,7 @@
                                 <li>@Html.ActionLink("Clans", "Index", "Clan", new { area = "Admin" })</li>
                             </ul>
                         </li>
+                        @await Component.InvokeAsync("CartSummary")
                     </ul>
                     @await Html.PartialAsync("_LoginPartial")
                 </div>

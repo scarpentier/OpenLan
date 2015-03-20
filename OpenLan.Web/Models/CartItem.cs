@@ -13,10 +13,10 @@ namespace OpenLan.Web.Models
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; }
 
-        [Required]
-        public virtual ShoppingCart Cart { get; set; }
+        public string CartId { get; set; }
 
-        [Required]
+        public int ProductId { get; set; }
+
         public virtual Product Product { get; set; }
     }
 }

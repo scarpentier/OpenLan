@@ -12,6 +12,8 @@ namespace OpenLan.Web.Models
 
         public DateTime OrderDate { get; set; }
 
+        public string UserId { get; set; }
+
         /// <summary>
         /// User that initiated the order
         /// </summary>

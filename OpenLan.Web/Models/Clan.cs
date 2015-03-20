@@ -38,6 +38,8 @@ namespace OpenLan.Web.Models
         /// </summary>
         public string Token { get; set; }
         
+        public string OwnerUserId { get; set; }
+
         /// <summary>
         /// User that owns the clan
         /// </summary>
