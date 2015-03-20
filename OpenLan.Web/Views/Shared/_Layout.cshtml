@@ -40,6 +40,11 @@
         </div>
     </div>
     <div class="container body-content">
+        @if (ViewBag.Error != null)
+        {
+
+        }
+
         @RenderBody()
         <hr />
         <footer>

@@ -18,24 +18,27 @@ namespace OpenLan.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            Clan clan = null;
-
-            // Get current user
-            var username = User.Identity.Name;
-            var user = await db.Users.Include(x => x.Clan).SingleAsync(x => x.UserName == User.Identity.Name); // Might be null
-
-            // Make sure user is authenticated and has a clan
-            if (user != null && user.Clan != null)
+            if (User.Identity.IsAuthenticated)
             {
-                clan = user.Clan;
+                var clan = (await db.Users.Include(x => x.Clan).SingleAsync(x => x.UserName == User.Identity.Name)).Clan;
+                ViewBag.UserClan = clan;
             }
 
-            return View(clan);
+            return View(db.Clans.Include(x => x.Members));
         }
 
-        public async Task<IActionResult> IndexPartial()
+        public async Task<IActionResult> Manage()
         {
-            return PartialView(db.Clans);
+            // Get current user
+            var user = await db.Users.Include(x => x.Clan).SingleAsync(x => x.UserName == User.Identity.Name);
+
+            // Make sure user is authenticated and has a clan
+            if (user == null || user.Clan == null)
+            {
+                return new HttpStatusCodeResult(400);
+            }
+
+            return View(user.Clan);
         }
 
         public async Task<IActionResult> ShowToken(int? id)
@@ -91,7 +94,7 @@ namespace OpenLan.Web.Controllers
                 // Add current user as leader and member
                 var currentUser = await db.Users.SingleAsync(x => x.UserName == User.Identity.Name);
                 currentUser.Clan = clan;
-                clan.OwnerUser = currentUser;
+                clan.OwnerUserId = currentUser.Id;
                 clan.Members = new List<ApplicationUser> { currentUser };
                 
                 await db.Clans.AddAsync(clan);
@@ -140,6 +143,12 @@ namespace OpenLan.Web.Controllers
             await db.SaveChangesAsync();
 
             return RedirectToAction("Index", "ClanStunt");
+        }
+
+        public async Task<IActionResult> TransferLeadership()
+        {
+            // TODO: Implement
+            throw new NotImplementedException();
         }
 
         public async Task<IActionResult> Leave()

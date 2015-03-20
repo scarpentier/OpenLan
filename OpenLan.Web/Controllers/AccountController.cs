@@ -145,7 +145,7 @@ namespace OpenLan.Web.Controllers
                 {
                     //Bug: Remember browser option missing?
                     //Uncomment this and comment the later part if account verification is not needed.
-                    //await SignInManager.SignInAsync(user, isPersistent: false);
+                    await SignInManager.SignInAsync(user, isPersistent: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link

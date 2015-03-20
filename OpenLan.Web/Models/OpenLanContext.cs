@@ -9,6 +9,7 @@ namespace OpenLan.Web.Models
     {
         public DbSet<Clan> Clans { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
+        public DbSet<TeamTournament> TeamTournament { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Seat> Seats { get; set; }
@@ -24,10 +25,6 @@ namespace OpenLan.Web.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-
             // Configure pluralization
             builder.Entity<CartItem>().ForRelational().Table("CartItems");
             builder.Entity<Order>().ForRelational().Table("Orders");
@@ -47,11 +44,19 @@ namespace OpenLan.Web.Models
                 .ForeignKey(x => x.ClanId)
                 .Required(false);
 
+            builder.Entity<Tournament>()
+                .HasMany<TeamTournament>(x => x.Teams)
+                .WithOne(x => x.Tournament)
+                .ForeignKey(x => x.TournamentId);
+
+            builder.Entity<Clan>()
+                .HasMany<TeamTournament>(x => x.Tournaments)
+                .WithOne(x => x.Clan)
+                .ForeignKey(x => x.ClanId);
+
             builder.Entity<Order>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Product>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Ticket>().HasOne<Seat>(x => x.Seat);
-            builder.Entity<Tournament>().HasMany<TeamTournament>(x => x.Teams);
-            builder.Entity<Clan>().HasMany<TeamTournament>(x => x.Tournaments);
             builder.Entity<ApplicationUser>().HasMany<Ticket>(x => x.Tickets);
             builder.Entity<ApplicationUser>().HasMany<Order>(x => x.Orders);
             builder.Entity<CartItem>().HasOne<Product>(x => x.Product);

@@ -1,23 +1,45 @@
-﻿@using OpenLan.Web.Models
-@model Clan
-
+﻿@model IEnumerable<OpenLan.Web.Models.Clan>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Registered Clans";
 }
 
-@if (Model != null)
-{
-    @Html.Partial("StatusPartial")
-<hr/>
-}
 <h2>Registered Clans</h2>
-@if (Model == null)
+
+@if (ViewBag.UserClan == null && User.Identity.IsAuthenticated)
 {
     <div class="alert alert-warning">
         <h4>You're not part of a clan</h4>
-        <p></p>
         <p><a class="btn btn-primary" href="/Clan/Start">Create or join a clan &raquo;</a></p>
-</div>
-<br>
+    </div>
 }
-@*@await Html.PartialAsync("IndexPartial")*@
+@if (ViewBag.UserClan != null) {
+    <p>You're already part of <b><a href="/Clan/Manage">@ViewBag.UserClan.Name</a></b></p>
+}
+
+@if (Model == null)
+{
+    <caption>There are no clans currently registered</caption>
+}
+else
+{
+    <table class="table table-striped">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Members)
+            </th>
+        </tr>
+
+        @foreach (var item in Model.OrderByDescending(x => x.DateCreated))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item, "ClanName")
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.Members.Count)</td>
+            </tr>
+        }
+    </table>
+}

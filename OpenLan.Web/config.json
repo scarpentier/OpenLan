@@ -1,6 +1,6 @@
 ﻿{
-    "DefaultAdminUsername": "Administrator@test.com",
-    "DefaultAdminPassword": "YouShouldChangeThisPassword1!",
+    "DefaultAdminUsername": "admin@test.com",
+    "DefaultAdminPassword": "Password1!",
     "Data": {
         "DefaultConnection": {
             "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=OpenLan;Trusted_Connection=True;MultipleActiveResultSets=true"

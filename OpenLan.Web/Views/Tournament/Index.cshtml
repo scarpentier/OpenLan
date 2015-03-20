@@ -7,4 +7,29 @@
 
 <h2>@ViewBag.Title</h2>
 
-@await Html.PartialAsync("IndexPartial")
+@*@await Html.PartialAsync("IndexPartial")*@
+
+<div class="row">
+    @foreach (var tournament in Model)
+    {
+        <div class="col-md-6">
+            <img src="@tournament.PictureUrl" style="width: 210px; float: left; padding-right: 15px" />
+            <a href="@tournament.Url"><span style="font-size: x-large; font-weight: bold; margin-left: -4px">@tournament.Name</span></a>
+            @if (tournament.Tagline != null)
+            {
+                <br />@tournament.Tagline
+
+            }
+            @if (tournament.Teams != null && tournament.Teams.Count > 0)
+            {
+                <br /><span class="text-muted">@tournament.Teams.Count teams registered</span>
+            }
+            else
+            {
+                <br /><i>No team currently registered in this tournament.</i>
+            }
+            <br />
+            @Html.ActionLink("Register now!", "RegisterClan", "Tournament", new { id = tournament.Id }, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>
