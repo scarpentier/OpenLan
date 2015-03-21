@@ -19,10 +19,8 @@ namespace OpenLan.Web.Models
         public int PosY { get; set; }
 
         public SeatStatus Status { get; set; }
-       
-        /// <summary>
-        /// Associated ticked for that seat
-        /// </summary>
+
+        public int? TicketId { get; set; }
         public virtual Ticket Ticket { get; set; }
     }
 

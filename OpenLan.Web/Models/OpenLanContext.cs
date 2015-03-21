@@ -38,6 +38,7 @@ namespace OpenLan.Web.Models
             builder.Entity<Post>().ForRelational().Table("Posts");
 
             // Configure relations
+            // Clan, team, tournaments and user
             builder.Entity<Clan>()
                 .HasMany(x => x.Members)
                 .WithOne(x => x.Clan)
@@ -57,20 +58,41 @@ namespace OpenLan.Web.Models
             builder.Entity<TeamTournament>()
                 .HasMany(x => x.AssignedMembers);
 
+            // Cart, cart and order
             builder.Entity<Order>().HasMany<OrderDetail>(x => x.OrderDetails);
             builder.Entity<Product>().HasMany<OrderDetail>(x => x.OrderDetails);
-            builder.Entity<Ticket>().HasOne<Seat>(x => x.Seat);
-            builder.Entity<ApplicationUser>().HasMany<Ticket>(x => x.Tickets);
             builder.Entity<ApplicationUser>().HasMany<Order>(x => x.Orders);
             builder.Entity<CartItem>().HasOne<Product>(x => x.Product);
 
+            // User, ticket and seat
+            builder.Entity<Ticket>()
+                .HasOne<ApplicationUser>(x => x.UserOwner)
+                .WithMany(x => x.TicketsOwned)
+                .ForeignKey(x => x.UserOwnerId)
+                .ReferencedKey(x => x.Id);
+
+            builder.Entity<Ticket>()
+                .HasOne<Seat>(x => x.Seat)
+                .WithOne(x => x.Ticket)
+                .ForeignKey<Ticket>(x => x.SeatId)
+                .ReferencedKey<Seat>(x => x.Id)
+                .Required(false);
+
+            builder.Entity<Ticket>()
+                .HasOne<ApplicationUser>(x => x.UserAssigned)
+                .WithOne(x => x.TicketAssigned)
+                .ForeignKey<Ticket>(x => x.UserAssignedId)
+                .ReferencedKey<ApplicationUser>(x => x.Id)
+                .Required(false);
+
+            builder.Entity<Ticket>()
+                .HasOne<Order>(x => x.Order)
+                .WithMany(x => x.Tickets)
+                .ForeignKey(x => x.OrderId)
+                .ReferencedKey(x => x.Id);
+
             // Configure delete cascade
             // TODO: Not yet implemented in EF7. See https://github.com/aspnet/EntityFramework/issues/333
-
-            // Configure nullable
-            ////builder.Entity<ApplicationUser>().Property(x => x.Team).Required(false);
-            ////builder.Entity<Team>().Property(x => x.OwnerUser).Required(false);
-            ////builder.Entity<Ticket>().Property(x => x.Seat).Required(false);
 
             base.OnModelCreating(builder);
         }

@@ -17,18 +17,19 @@ namespace OpenLan.Web.Models
         /// </summary>
         public virtual Order Order { get; set; }
 
-        public string UserId { get; set; }
+        public virtual string UserOwnerId { get; set; }
+
+        public virtual ApplicationUser UserOwner { get; set; }
+
+        public string UserAssignedId { get; set; }
 
         /// <summary>
         /// User for which the ticket is applied
         /// </summary>
-        public virtual ApplicationUser User { get; set; }
+        public virtual ApplicationUser UserAssigned { get; set; }
 
-        public int SeatId { get; set; }
+        public int? SeatId { get; set; }
 
-        /// <summary>
-        /// Seat for which the ticket is applied
-        /// </summary>
         public virtual Seat Seat { get; set; }
     }
 

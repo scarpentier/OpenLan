@@ -22,38 +22,44 @@
     <br /><span>Your clan tag is @Model.Tag</span>
 }
 </p>
-@Html.ActionLink("Edit clan properties", "Edit", routeValues: new { Id = Model.Id })
+@Html.ActionLink("Edit clan properties", "Edit", routeValues: new { Id = Model.Id }) | @Html.ActionLink("Transfer leadership", "TransferLeadership", routeValues: new { Id = Model.Id })
 
-<h3>Tournaments</h3>
-<table class="table table-striped">
-    <tr>
-        <th>Tournament</th>
-        <th>Team Name</th>
-        <th>Actions</th>
-    </tr>
-
-    @foreach (var item in Model.Tournaments)
-    {
+@if (Model.Tournaments.Count() > 0)
+{
+    <h3>Tournaments</h3>
+    <table class="table table-striped">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tournament.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit Name", "Edit", "TeamTournament", routeValues: new { Id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", "TeamTournament", routeValues: new { Id = item.Id })
-            </td>
+            <th>Tournament</th>
+            <th>Team Name</th>
+            <th>Participants</th>
+            <th>Actions</th>
         </tr>
-    }
-</table>
+
+        @foreach (var item in Model.Tournaments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tournament.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.AssignedMembers.Count)</td>
+                <td>
+                    @Html.ActionLink("Edit Name", "Edit", "TeamTournament", routeValues: new { Id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", "TeamTournament", routeValues: new { Id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+}
 
 <h3>Members</h3>
 
 <table class="table table-striped">
     <tr>
         <th>Name</th>
+        <th>Ticket</th>
         <th>Actions</th>
     </tr>
 
@@ -62,6 +68,12 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <th>
+                
+            </th>
+            <td>
+                @Html.ActionLink("Kick", "Kick", routeValues: new { Id = item.Id })
             </td>
         </tr>
     }

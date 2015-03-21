@@ -21,6 +21,10 @@ namespace OpenLan.Web.Models
 
         public virtual ICollection<Order> Orders { get; set; }
 
-        public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<Ticket> TicketsOwned { get; set; }
+
+        public virtual int TicketAssignedId { get; set; }
+
+        public virtual Ticket TicketAssigned { get; set; }
     }
 }

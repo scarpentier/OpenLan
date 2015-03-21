@@ -1,6 +1,7 @@
 ﻿{
     "DefaultAdminUsername": "admin@test.com",
     "DefaultAdminPassword": "Password1!",
+    "StripeApiKey": "sk_test_VD5Xw4EehScXQdYV0fujg6Nr",
     "Data": {
         "DefaultConnection": {
             "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=OpenLan;Trusted_Connection=True;MultipleActiveResultSets=true"

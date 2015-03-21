@@ -1,0 +1,63 @@
+﻿﻿@using OpenLan.Web.Models
+@model IEnumerable<Ticket>
+
+@{
+    ViewBag.Title = "Manage your tickets";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-striped">
+    <tr>
+        <th>Ticket#</th>
+        <th>Order#</th>
+        <th>Type</th>
+        <th>Assignee</th>
+        <th>Place</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketType)
+            </td>
+            <td>
+                @if (item.UserAssigned == null)
+                {
+                    <i>Not assigned</i>
+                } else
+                {
+                    @Html.DisplayFor(modelItem => item.UserAssigned.UserName)
+                }
+                @Html.Raw(" | ")
+                @Html.ActionLink("Assign participant", "Assign")
+            </td>
+            <td>
+                @if (item.TicketType == TicketType.BYOC || item.TicketType == TicketType.BYOCVIP)
+                {
+                    if (item.Seat == null)
+                    {
+                        <i>Not assigned</i>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Seat.Name)
+                    }
+                    @Html.Raw(" | ")
+                    @Html.ActionLink("Select place", "", "ShoppingCart", new { id = item.Id })
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Transfer ownership", "TransferOwnership")
+            </td>
+        </tr>
+        }
+</table>

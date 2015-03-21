@@ -24,12 +24,12 @@
             }
             else
             {
-                <br /><i>No team currently registered in this tournament.</i>
+                <br /><span class="text-muted" style="font-style: italic">No team currently registered in this tournament.</span>
+    }
+    <br />
+    @if (ViewBag.IsClanOwner) {
+        @Html.ActionLink("Register your clan", "RegisterClan", "TeamTournament", new { id = tournament.Id })
             }
-            <br />
-            @if (ViewBag.IsClanOwner) {
-                @Html.ActionLink("Register your clan", "RegisterClan", "TeamTournament", new { id = tournament.Id })
-            }
-        </div>
+</div>
     }
 </div>

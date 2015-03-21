@@ -4,13 +4,13 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using OpenLan.Web.Models;
+using Stripe;
 
 namespace OpenLan.Web.Controllers
 {
     [Authorize]
     public class CheckoutController : Controller
     {
-        private const string PromoCode = "FREE";
         private readonly OpenLanContext _dbContext;
 
         public CheckoutController(OpenLanContext dbContext)
@@ -21,9 +21,11 @@ namespace OpenLan.Web.Controllers
         //
         // GET: /Checkout/
 
-        public IActionResult AddressAndPayment()
+        public async Task<IActionResult> AddressAndPayment()
         {
-            return View();
+            var cart = ShoppingCart.GetCart(_dbContext, Context);
+                        
+            return View(Convert.ToInt32(await cart.GetTotal() * 100));
         }
 
         //
@@ -33,40 +35,70 @@ namespace OpenLan.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddressAndPayment(Order order)
         {
+            var cart = ShoppingCart.GetCart(_dbContext, Context);
             var formCollection = await Context.Request.ReadFormAsync();
-
-            try
+                
+            var charge = new StripeChargeCreateOptions
             {
-                if (string.Equals(formCollection.GetValues("PromoCode").FirstOrDefault(), PromoCode,
-                    StringComparison.OrdinalIgnoreCase) == false)
+                Amount = Convert.ToInt32(await cart.GetTotal() * 100),
+                Currency = "cad",
+                Card = new StripeCreditCardOptions
                 {
-                    return View(order);
+                    TokenId = formCollection.GetValues("stripeToken").FirstOrDefault()
                 }
-                else
-                {
-                    order.UserId = Context.User.Identity.GetUserId();
-                    order.OrderDate = DateTime.Now;
+            };
 
-                    // Add the Order
-                    await _dbContext.Orders.AddAsync(order, Context.RequestAborted);
+            // TODO: Read this from configuration
+            var chargeService = new StripeChargeService("sk_test_VD5Xw4EehScXQdYV0fujg6Nr");
+            var stripeCharge = chargeService.Create(charge);
 
-                    // Process the order
-                    var cart = ShoppingCart.GetCart(_dbContext, Context);
-                    await cart.CreateOrder(order);
+            order.UserId = Context.User.Identity.GetUserId();
+            order.OrderDate = DateTime.Now;
 
-                    // If the product is a ticket, 
+            // Add the Order
+            await _dbContext.Orders.AddAsync(order, Context.RequestAborted);
 
-                    // Save all changes
-                    await _dbContext.SaveChangesAsync(Context.RequestAborted);
+            // Process the order
+            await _dbContext.SaveChangesAsync(Context.RequestAborted);
 
-                    return RedirectToAction("Complete", new { id = order.Id });
-                }
-            }
-            catch
+            // Get the order's content
+            foreach (var item in await cart.GetCartItems())
             {
-                //Invalid - redisplay with errors
-                return View(order);
+                // If the product is a ticket, add it to the user's account
+                TicketType tt;
+                switch (item.ProductId) {
+                    case "lanbyoc":
+                        tt = TicketType.BYOC;
+                        break;
+                    case "lanbyocvip":
+                        tt = TicketType.BYOCVIP;
+                        break;
+                    case "lanconsole":
+                        tt = TicketType.Console;
+                        break;
+                    case "lanvisitor":
+                        tt = TicketType.Visitor;
+                        break;
+                    default:
+                        continue;
+                }
+
+                var ticket = new Ticket
+                {
+                    OrderId = order.Id,
+                    TicketType = tt,
+                    UserOwnerId = User.Identity.GetUserId()
+                };
+                await _dbContext.Tickets.AddAsync(ticket);
             }
+
+            // Save all changes
+            await _dbContext.SaveChangesAsync(Context.RequestAborted);
+
+            // Empty the cart
+            cart.EmptyCart();
+
+            return RedirectToAction("Complete", new { id = order.Id });
         }
 
         //
